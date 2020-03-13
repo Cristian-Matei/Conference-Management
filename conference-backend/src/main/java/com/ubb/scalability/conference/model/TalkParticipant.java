@@ -58,7 +58,7 @@ public class TalkParticipant {
     }
 
     @ManyToOne
-    @JoinColumn(name = "talk_id", referencedColumnName = "id")
+    @JoinColumn(name = "talk_id", referencedColumnName = "id", insertable=false, updatable=false)
     public Talk getTalksByTalkId() {
         return talksByTalkId;
     }
@@ -68,7 +68,7 @@ public class TalkParticipant {
     }
 
     @ManyToOne
-    @JoinColumn(name = "participant_id", referencedColumnName = "id")
+    @JoinColumn(name = "participant_id", referencedColumnName = "id", insertable=false, updatable=false)
     public User getUsersByParticipantId() {
         return usersByParticipantId;
     }

@@ -25,8 +25,8 @@ public class UserService {
         return user.orElseGet(User::new);
     }
 
-    public void deleteUser(User user) {
-        userRepository.delete(user);
+    public void deleteUser(long id) {
+        userRepository.deleteById(id);
     }
 
     public List<User> getAllUsers() {

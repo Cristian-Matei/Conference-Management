@@ -95,7 +95,7 @@ public class Article {
     }
 
     @ManyToOne
-    @JoinColumn(name = "author", referencedColumnName = "id")
+    @JoinColumn(name = "author", referencedColumnName = "id", insertable=false, updatable=false)
     public User getUsersByAuthor() {
         return usersByAuthor;
     }

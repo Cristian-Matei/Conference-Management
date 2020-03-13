@@ -94,7 +94,7 @@ public class Talk {
     }
 
     @ManyToOne
-    @JoinColumn(name = "article", referencedColumnName = "id")
+    @JoinColumn(name = "article", referencedColumnName = "id", insertable=false, updatable=false)
     public Article getArticlesByArticle() {
         return articlesByArticle;
     }
@@ -104,7 +104,7 @@ public class Talk {
     }
 
     @ManyToOne
-    @JoinColumn(name = "room", referencedColumnName = "id")
+    @JoinColumn(name = "room", referencedColumnName = "id", insertable=false, updatable=false)
     public Room getRoomsByRoom() {
         return roomsByRoom;
     }

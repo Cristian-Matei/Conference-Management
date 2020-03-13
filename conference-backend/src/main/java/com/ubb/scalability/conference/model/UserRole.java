@@ -58,7 +58,7 @@ public class UserRole {
     }
 
     @ManyToOne
-    @JoinColumn(name = "role_id", referencedColumnName = "id")
+    @JoinColumn(name = "role_id", referencedColumnName = "id", insertable=false, updatable=false)
     public Role getRolesByRoleId() {
         return rolesByRoleId;
     }
@@ -68,7 +68,7 @@ public class UserRole {
     }
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id", insertable=false, updatable=false)
     public User getUsersByUserId() {
         return usersByUserId;
     }
