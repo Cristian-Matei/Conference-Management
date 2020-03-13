@@ -1,4 +1,4 @@
-package com.ubb.scalability.conference.entities;
+package com.ubb.scalability.conference.model;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
