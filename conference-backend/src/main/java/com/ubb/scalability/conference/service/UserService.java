@@ -20,12 +20,12 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public User getUser(long id) {
+    public User getUser(int id) {
         Optional<User> user = userRepository.findById(id);
         return user.orElseGet(User::new);
     }
 
-    public void deleteUser(long id) {
+    public void deleteUser(int id) {
         userRepository.deleteById(id);
     }
 

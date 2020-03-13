@@ -20,12 +20,12 @@ public class UserController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public User getUsers(@PathVariable("id") long id) {
+    public User getUsers(@PathVariable("id") int id) {
         return userService.getUser(id);
     }
 
     @RequestMapping(value="/{id}", method = RequestMethod.DELETE)
-    public void deleteUsers(@PathVariable("id") long id) {
+    public void deleteUsers(@PathVariable("id") int id) {
         userService.deleteUser(id);
     }
 
