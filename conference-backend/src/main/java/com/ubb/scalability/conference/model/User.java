@@ -15,7 +15,7 @@ public class User {
     private String affiliation;
     private String email;
     private String password;
-    private Boolean emailVerified;
+    private Boolean emailVerified = false;
     private String providerId;
 
     @NotNull
