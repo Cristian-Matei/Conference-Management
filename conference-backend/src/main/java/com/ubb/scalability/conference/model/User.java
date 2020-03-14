@@ -1,6 +1,8 @@
 package com.ubb.scalability.conference.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.Objects;
 
@@ -13,6 +15,14 @@ public class User {
     private String affiliation;
     private String email;
     private String password;
+    private Boolean emailVerified;
+    private String providerId;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private AuthProvider provider;
+
+
     private Collection<Article> articlesById;
     private Collection<TalkParticipant> talkParticipantsById;
     private Collection<UserRole> usersRolesById;
@@ -57,6 +67,7 @@ public class User {
         this.affiliation = affiliation;
     }
 
+    @Email
     @Basic
     @Column(name = "email", nullable = false, length = 50)
     public String getEmail() {
@@ -75,6 +86,28 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Basic
+    @Column(name = "email_verified", nullable = false)
+    public Boolean getEmailVerified() { return emailVerified; }
+
+    public void setEmailVerified(Boolean emailVerified) { this.emailVerified = emailVerified; }
+
+    public String getProviderId() {
+        return providerId;
+    }
+
+    public void setProviderId(String providerId) {
+        this.providerId = providerId;
+    }
+
+    public AuthProvider getProvider() {
+        return provider;
+    }
+
+    public void setProvider(AuthProvider provider) {
+        this.provider = provider;
     }
 
     @Override
