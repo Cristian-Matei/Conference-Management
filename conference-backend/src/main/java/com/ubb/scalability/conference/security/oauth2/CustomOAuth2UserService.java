@@ -4,7 +4,9 @@ package com.ubb.scalability.conference.security.oauth2;
 import com.ubb.scalability.conference.exception.OAuth2AuthenticationProcessingException;
 import com.ubb.scalability.conference.model.AuthProvider;
 import com.ubb.scalability.conference.model.User;
+import com.ubb.scalability.conference.model.UserRole;
 import com.ubb.scalability.conference.repository.UserRepository;
+import com.ubb.scalability.conference.repository.UserRoleRepository;
 import com.ubb.scalability.conference.security.UserPrincipal;
 import com.ubb.scalability.conference.security.oauth2.user.OAuth2UserInfo;
 import com.ubb.scalability.conference.security.oauth2.user.OAuth2UserInfoFactory;
@@ -18,13 +20,18 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private UserRoleRepository userRoleRepository;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest oAuth2UserRequest) throws OAuth2AuthenticationException {
@@ -68,23 +75,28 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         user.setProvider(AuthProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()));
         user.setProviderId(oAuth2UserInfo.getId());
-        user.setFirstName(getFirstNameFromName(oAuth2UserInfo.getName()));
-        user.setLastName(getLastNameFromName(oAuth2UserInfo.getName()));
+        user.setFirstName(oAuth2UserInfo.getFirstName());
+        user.setLastName(oAuth2UserInfo.getLastName());
         user.setEmail(oAuth2UserInfo.getEmail());
-        return userRepository.save(user);
+        user.setAffiliation(oAuth2UserInfo.getAffiliation());
+
+        List<UserRole> userRoles;
+        userRoles = oAuth2UserInfo.getRoles().stream().map(r -> {
+            UserRole userRole = new UserRole();
+            userRole.setRoleId(r.getId());
+            userRole.setUserId(user.getId());
+            return userRole;
+        }).collect(Collectors.toList());
+
+        userRepository.save(user);
+        userRoleRepository.saveAll(userRoles);
+        return user;
     }
 
     private User updateExistingUser(User existingUser, OAuth2UserInfo oAuth2UserInfo) {
-        existingUser.setFirstName(getFirstNameFromName(oAuth2UserInfo.getName()));
-        existingUser.setLastName(getLastNameFromName(oAuth2UserInfo.getName()));
+        existingUser.setFirstName(oAuth2UserInfo.getFirstName());
+        existingUser.setLastName(oAuth2UserInfo.getLastName());
         return userRepository.save(existingUser);
     }
 
-    private String getFirstNameFromName(String name) {
-        return name.split(" ")[0];
-    }
-
-    private String getLastNameFromName(String name) {
-        return name.split(" ")[1];
-    }
 }
