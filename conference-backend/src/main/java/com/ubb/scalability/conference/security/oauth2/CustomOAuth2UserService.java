@@ -4,9 +4,7 @@ package com.ubb.scalability.conference.security.oauth2;
 import com.ubb.scalability.conference.exception.OAuth2AuthenticationProcessingException;
 import com.ubb.scalability.conference.model.AuthProvider;
 import com.ubb.scalability.conference.model.User;
-import com.ubb.scalability.conference.model.UserRole;
 import com.ubb.scalability.conference.repository.UserRepository;
-import com.ubb.scalability.conference.repository.UserRoleRepository;
 import com.ubb.scalability.conference.security.UserPrincipal;
 import com.ubb.scalability.conference.security.oauth2.user.OAuth2UserInfo;
 import com.ubb.scalability.conference.security.oauth2.user.OAuth2UserInfoFactory;
@@ -20,9 +18,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
@@ -30,8 +26,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private UserRoleRepository userRoleRepository;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest oAuth2UserRequest) throws OAuth2AuthenticationException {
@@ -80,16 +74,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         user.setEmail(oAuth2UserInfo.getEmail());
         user.setAffiliation(oAuth2UserInfo.getAffiliation());
 
-        List<UserRole> userRoles;
-        userRoles = oAuth2UserInfo.getRoles().stream().map(r -> {
-            UserRole userRole = new UserRole();
-            userRole.setRoleId(r.getId());
-            userRole.setUserId(user.getId());
-            return userRole;
-        }).collect(Collectors.toList());
-
+        //TODO: add roles
         userRepository.save(user);
-        userRoleRepository.saveAll(userRoles);
         return user;
     }
 

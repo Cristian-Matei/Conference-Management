@@ -5,13 +5,12 @@ import com.ubb.scalability.conference.exception.BadRequestException;
 import com.ubb.scalability.conference.model.AuthProvider;
 import com.ubb.scalability.conference.model.Role;
 import com.ubb.scalability.conference.model.User;
-import com.ubb.scalability.conference.model.UserRole;
 import com.ubb.scalability.conference.payload.ApiResponse;
 import com.ubb.scalability.conference.payload.AuthResponse;
 import com.ubb.scalability.conference.payload.LoginRequest;
 import com.ubb.scalability.conference.payload.SignUpRequest;
+import com.ubb.scalability.conference.repository.RoleRepository;
 import com.ubb.scalability.conference.repository.UserRepository;
-import com.ubb.scalability.conference.repository.UserRoleRepository;
 import com.ubb.scalability.conference.security.TokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +30,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -41,14 +41,17 @@ public class AuthController {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private UserRoleRepository userRoleRepository;
+//    @Autowired
+//    private UserRoleRepository userRoleRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Autowired
     private TokenProvider tokenProvider;
+
+    @Autowired
+    private RoleRepository roleRepository;
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -82,17 +85,10 @@ public class AuthController {
         user.setAffiliation(signUpRequest.getAffiliation());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        List<Role> roles = signUpRequest.getRoles();
-        List<UserRole> userRoles;
-        userRoles = roles.stream().map(r -> {
-            UserRole userRole = new UserRole();
-            userRole.setRoleId(r.getId());
-            userRole.setUserId(user.getId());
-            return userRole;
-        }).collect(Collectors.toList());
-
+        List<Role> roles = signUpRequest.getRoles().stream().map(r -> roleRepository.findByRoleName(r.getRoleName())).collect(Collectors.toList());
+        user.setRoles(roles);
         User result = userRepository.save(user);
-        userRoleRepository.saveAll(userRoles);
+//        userRoleRepository.saveAll(userRoles);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentContextPath().path("/user/me")

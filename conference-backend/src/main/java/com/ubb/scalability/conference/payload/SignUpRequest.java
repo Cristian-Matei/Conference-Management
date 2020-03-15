@@ -7,23 +7,23 @@ import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 public class SignUpRequest {
-    @NotBlank
+//    @NotBlank
     private String firstName;
 
-    @NotBlank
+//    @NotBlank
     private String lastName;
 
-    @NotBlank
+//    @NotBlank
     @Email
     private String email;
 
-    @NotBlank
+//    @NotBlank
     private String password;
 
-    @NotBlank
+//    @NotBlank
     private String affiliation;
 
-    @NotBlank
+//    @NotBlank
     private List<Role> roles;
 
     public String getFirstName() {
