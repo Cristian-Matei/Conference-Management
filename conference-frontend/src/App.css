@@ -1,38 +1,44 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.centered {
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-items: center;
+  text-align: center;
+  min-height: 100vh;
 }
 
-.App-link {
-  color: #61dafb;
+.demo-card-wide.mdl-card {
+  width: 550px;
+  background-color:lightgrey;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.demo-card-wide > .mdl-card__title {
+  color: rgb(175, 32, 32);
+  height: 100px;
+  align-self: center;
+  /* padding-left: 30%; */
+  /* background: url('./assets/logo.png'); */
+}
+
+.demo-card-wide > .mdl-card__supporting-text {
+  padding-left: 7%;
+}
+
+.mdl-textfield__label__icon {
+  position: absolute;
+  right: 310px;
+  top: 20px;
+}
+
+.mdl-checkbox__label {
+  position: absolute;
+  right: 360px;
+  font-size: 16px;
+  line-height: 20px;
+}
+
+.mdl-checkbox {
+  position: relative;
+  left: 100px;
+  /* padding-bottom: 10px; */
 }
