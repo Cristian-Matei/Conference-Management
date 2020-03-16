@@ -1,29 +1,38 @@
 package com.ubb.scalability.conference.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.Objects;
 
 @Entity
 @Table(name = "users", schema = "conference")
 public class User {
-    private int id;
+    private Integer id;
     private String firstName;
     private String lastName;
     private String affiliation;
     private String email;
     private String password;
-    private Collection<Article> articlesById;
-    private Collection<TalkParticipant> talkParticipantsById;
-    private Collection<UserRole> usersRolesById;
+    private Boolean emailVerified = false;
+    private String providerId;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private AuthProvider provider;
+
+
+    private Collection<Role> roles;
 
     @Id
     @Column(name = "id", nullable = false)
-    public int getId() {
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -57,6 +66,7 @@ public class User {
         this.affiliation = affiliation;
     }
 
+    @Email
     @Basic
     @Column(name = "email", nullable = false, length = 50)
     public String getEmail() {
@@ -77,12 +87,34 @@ public class User {
         this.password = password;
     }
 
+    @Basic
+    @Column(name = "email_verified", nullable = false)
+    public Boolean getEmailVerified() { return emailVerified; }
+
+    public void setEmailVerified(Boolean emailVerified) { this.emailVerified = emailVerified; }
+
+    public String getProviderId() {
+        return providerId;
+    }
+
+    public void setProviderId(String providerId) {
+        this.providerId = providerId;
+    }
+
+    public AuthProvider getProvider() {
+        return provider;
+    }
+
+    public void setProvider(AuthProvider provider) {
+        this.provider = provider;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id == user.id &&
+        return Objects.equals(id, user.id) &&
                 Objects.equals(firstName, user.firstName) &&
                 Objects.equals(lastName, user.lastName) &&
                 Objects.equals(affiliation, user.affiliation) &&
@@ -95,30 +127,17 @@ public class User {
         return Objects.hash(id, firstName, lastName, affiliation, email, password);
     }
 
-    @OneToMany(mappedBy = "usersByAuthor")
-    public Collection<Article> getArticlesById() {
-        return articlesById;
+    @ManyToMany(cascade = { CascadeType.ALL })
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = { @JoinColumn(name = "user_id") },
+            inverseJoinColumns = { @JoinColumn(name = "role_id") }
+    )
+    public Collection<Role> getRoles() {
+        return roles;
     }
 
-    public void setArticlesById(Collection<Article> articlesById) {
-        this.articlesById = articlesById;
-    }
-
-    @OneToMany(mappedBy = "usersByParticipantId")
-    public Collection<TalkParticipant> getTalkParticipantsById() {
-        return talkParticipantsById;
-    }
-
-    public void setTalkParticipantsById(Collection<TalkParticipant> talkParticipantsById) {
-        this.talkParticipantsById = talkParticipantsById;
-    }
-
-    @OneToMany(mappedBy = "usersByUserId")
-    public Collection<UserRole> getUsersRolesById() {
-        return usersRolesById;
-    }
-
-    public void setUsersRolesById(Collection<UserRole> usersRolesById) {
-        this.usersRolesById = usersRolesById;
+    public void setRoles(Collection<Role> roles) {
+        this.roles = roles;
     }
 }
