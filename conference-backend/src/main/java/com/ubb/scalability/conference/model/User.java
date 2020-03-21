@@ -13,7 +13,6 @@ public class User {
     private String affiliation;
     private String email;
     private String password;
-    private Collection<Article> articlesById;
     private Collection<TalkParticipant> talkParticipantsById;
     private Collection<UserRole> usersRolesById;
 
@@ -93,15 +92,6 @@ public class User {
     @Override
     public int hashCode() {
         return Objects.hash(id, firstName, lastName, affiliation, email, password);
-    }
-
-    @OneToMany(mappedBy = "usersByAuthor")
-    public Collection<Article> getArticlesById() {
-        return articlesById;
-    }
-
-    public void setArticlesById(Collection<Article> articlesById) {
-        this.articlesById = articlesById;
     }
 
     @OneToMany(mappedBy = "usersByParticipantId")

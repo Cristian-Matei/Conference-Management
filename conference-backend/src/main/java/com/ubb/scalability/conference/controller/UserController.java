@@ -14,6 +14,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public void saveUsers(@RequestBody User user) {
         userService.saveUser(user);
