@@ -23,6 +23,12 @@ public class ArticleService {
     @Autowired
     private UserRepository userRepository;
 
+    /***
+     * Finds a list of articles based on given filter criteria which are optional
+     * @param domain of an article
+     * @param author of an article {@link UserDTO}
+     * @return a list of articles
+     */
     public List<Article> getArticles(String domain, UserDTO author) {
         if(domain != null && author != null) {
             User user = userRepository.findByName(author.getFirstName(),author.getLastName());
