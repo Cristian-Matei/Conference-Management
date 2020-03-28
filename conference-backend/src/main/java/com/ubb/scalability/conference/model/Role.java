@@ -7,17 +7,17 @@ import java.util.Objects;
 @Entity
 @Table(name = "roles", schema = "conference")
 public class Role {
-    private int id;
+    private Integer id;
     private String roleName;
-    private Collection<UserRole> usersRolesById;
 
     @Id
     @Column(name = "id", nullable = false)
-    public int getId() {
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -36,7 +36,7 @@ public class Role {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Role role = (Role) o;
-        return id == role.id &&
+        return Objects.equals(id, role.id) &&
                 Objects.equals(roleName, role.roleName);
     }
 
@@ -45,12 +45,4 @@ public class Role {
         return Objects.hash(id, roleName);
     }
 
-    @OneToMany(mappedBy = "rolesByRoleId")
-    public Collection<UserRole> getUsersRolesById() {
-        return usersRolesById;
-    }
-
-    public void setUsersRolesById(Collection<UserRole> usersRolesById) {
-        this.usersRolesById = usersRolesById;
-    }
 }

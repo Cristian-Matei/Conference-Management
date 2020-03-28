@@ -10,10 +10,11 @@ public class Room {
     private int id;
     private String name;
     private Integer places;
-    private Collection<Talk> talksById;
+    private Collection<Talk> talks;
 
     @Id
     @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy=GenerationType.AUTO)
     public int getId() {
         return id;
     }
@@ -57,12 +58,16 @@ public class Room {
         return Objects.hash(id, name, places);
     }
 
-    @OneToMany(mappedBy = "roomsByRoom")
-    public Collection<Talk> getTalksById() {
-        return talksById;
+    @OneToMany(
+            mappedBy = "room",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    public Collection<Talk> getTalks() {
+        return talks;
     }
 
-    public void setTalksById(Collection<Talk> talksById) {
-        this.talksById = talksById;
+    public void setTalks(Collection<Talk> talks) {
+        this.talks = talks;
     }
 }
