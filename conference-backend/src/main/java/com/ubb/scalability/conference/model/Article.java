@@ -1,7 +1,6 @@
 package com.ubb.scalability.conference.model;
 
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.Objects;
 
 @Entity

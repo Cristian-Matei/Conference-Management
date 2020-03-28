@@ -24,9 +24,7 @@ import static com.ubb.scalability.conference.security.oauth2.HttpCookieOAuth2Aut
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private TokenProvider tokenProvider;
-
     private AppProperties appProperties;
-
     private HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
 
 
@@ -68,7 +66,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                 .build().toUriString();
     }
 
-    protected void clearAuthenticationAttributes(HttpServletRequest request, HttpServletResponse response) {
+    private void clearAuthenticationAttributes(HttpServletRequest request, HttpServletResponse response) {
         super.clearAuthenticationAttributes(request);
         httpCookieOAuth2AuthorizationRequestRepository.removeAuthorizationRequestCookies(request, response);
     }
@@ -81,11 +79,8 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                 .anyMatch(authorizedRedirectUri -> {
                     // Only validate host and port. Let the clients use different paths if they want to
                     URI authorizedURI = URI.create(authorizedRedirectUri);
-                    if(authorizedURI.getHost().equalsIgnoreCase(clientRedirectUri.getHost())
-                            && authorizedURI.getPort() == clientRedirectUri.getPort()) {
-                        return true;
-                    }
-                    return false;
+                    return authorizedURI.getHost().equalsIgnoreCase(clientRedirectUri.getHost())
+                            && authorizedURI.getPort() == clientRedirectUri.getPort();
                 });
     }
 }
