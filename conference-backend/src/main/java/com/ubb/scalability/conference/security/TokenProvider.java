@@ -34,7 +34,7 @@ public class TokenProvider {
                 .compact();
     }
 
-    public Integer getUserIdFromToken(String token) {
+    Integer getUserIdFromToken(String token) {
         Claims claims = Jwts.parser()
                 .setSigningKey(appProperties.getAuth().getTokenSecret())
                 .parseClaimsJws(token)
@@ -43,7 +43,7 @@ public class TokenProvider {
         return Integer.parseInt(claims.getSubject());
     }
 
-    public boolean validateToken(String authToken) {
+    boolean validateToken(String authToken) {
         try {
             Jwts.parser().setSigningKey(appProperties.getAuth().getTokenSecret()).parseClaimsJws(authToken);
             return true;

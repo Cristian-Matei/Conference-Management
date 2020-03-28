@@ -35,23 +35,20 @@ import java.util.stream.Collectors;
 @RequestMapping("/auth")
 public class AuthController {
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final TokenProvider tokenProvider;
+    private final RoleRepository roleRepository;
 
     @Autowired
-    private UserRepository userRepository;
-
-//    @Autowired
-//    private UserRoleRepository userRoleRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private TokenProvider tokenProvider;
-
-    @Autowired
-    private RoleRepository roleRepository;
+    public AuthController(AuthenticationManager authenticationManager, UserRepository userRepository, PasswordEncoder passwordEncoder, TokenProvider tokenProvider, RoleRepository roleRepository) {
+        this.authenticationManager = authenticationManager;
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.tokenProvider = tokenProvider;
+        this.roleRepository = roleRepository;
+    }
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -85,11 +82,10 @@ public class AuthController {
         user.setAffiliation(signUpRequest.getAffiliation());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        List<Role> roles = signUpRequest.getRoles().stream().map(r -> roleRepository.findByRoleName(r.getRoleName())).collect(Collectors.toList());
+        List<Role> roles = signUpRequest.getRoles().stream()
+                .map(r -> roleRepository.findByRoleName(r.getRoleName())).collect(Collectors.toList());
         user.setRoles(roles);
         User result = userRepository.save(user);
-//        userRoleRepository.saveAll(userRoles);
-
         URI location = ServletUriComponentsBuilder
                 .fromCurrentContextPath().path("/user/me")
                 .buildAndExpand(result.getId()).toUri();

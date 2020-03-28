@@ -3,7 +3,6 @@ package com.ubb.scalability.conference.config;
 import com.ubb.scalability.conference.security.CustomUserDetailsService;
 import com.ubb.scalability.conference.security.RestAuthenticationEntryPoint;
 import com.ubb.scalability.conference.security.TokenAuthenticationFilter;
-import com.ubb.scalability.conference.security.oauth2.CustomOAuth2UserService;
 import com.ubb.scalability.conference.security.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.ubb.scalability.conference.security.oauth2.OAuth2AuthenticationFailureHandler;
 import com.ubb.scalability.conference.security.oauth2.OAuth2AuthenticationSuccessHandler;
@@ -31,20 +30,16 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 )
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private CustomUserDetailsService customUserDetailsService;
+    private final CustomUserDetailsService customUserDetailsService;
+    private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
+    private final OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
 
     @Autowired
-    private CustomOAuth2UserService customOAuth2UserService;
-
-    @Autowired
-    private OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
-
-    @Autowired
-    private OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
-
-    @Autowired
-    private HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
+    public SecurityConfig(CustomUserDetailsService customUserDetailsService, OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler, OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler) {
+        this.customUserDetailsService = customUserDetailsService;
+        this.oAuth2AuthenticationSuccessHandler = oAuth2AuthenticationSuccessHandler;
+        this.oAuth2AuthenticationFailureHandler = oAuth2AuthenticationFailureHandler;
+    }
 
     @Bean
     public TokenAuthenticationFilter tokenAuthenticationFilter() {
@@ -123,7 +118,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .baseUri("/oauth2/callback/*")
                 .and()
                 .userInfoEndpoint()
-                .userService(customOAuth2UserService)
                 .and()
                 .successHandler(oAuth2AuthenticationSuccessHandler)
                 .failureHandler(oAuth2AuthenticationFailureHandler);
