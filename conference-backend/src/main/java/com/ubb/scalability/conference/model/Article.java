@@ -57,7 +57,7 @@ public class Article {
     }
 
     @Basic
-    @Column(name = "description", nullable = true, length = -1)
+    @Column(name = "description", nullable = true)
     public String getDescription() {
         return description;
     }
@@ -111,5 +111,14 @@ public class Article {
 
     public void setTalksById(Collection<Talk> talksById) {
         this.talksById = talksById;
+    }
+
+    public ArticleDTO toArticleDTO(){
+        ArticleDTO articleDTO = new ArticleDTO();
+        articleDTO.setId(getId());
+        articleDTO.setTitle(getTitle());
+        articleDTO.setDomain(getDomain());
+        articleDTO.setAuthor(getUsersByAuthor().toUserDTO());
+        return articleDTO;
     }
 }

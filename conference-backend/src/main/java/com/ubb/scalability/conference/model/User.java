@@ -111,4 +111,11 @@ public class User {
     public void setUsersRolesById(Collection<UserRole> usersRolesById) {
         this.usersRolesById = usersRolesById;
     }
+
+    public UserDTO toUserDTO() {
+        UserDTO userDTO = new UserDTO();
+        userDTO.setFirstName(getFirstName());
+        userDTO.setLastName(getLastName());
+        return userDTO;
+    }
 }

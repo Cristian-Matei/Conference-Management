@@ -1,8 +1,9 @@
 package com.ubb.scalability.conference;
 
-import com.ubb.scalability.conference.controller.UserDTO;
+import com.ubb.scalability.conference.model.ArticleDTO;
 import com.ubb.scalability.conference.model.Article;
 import com.ubb.scalability.conference.model.User;
+import com.ubb.scalability.conference.model.UserDTO;
 import com.ubb.scalability.conference.repository.ArticleRepository;
 import com.ubb.scalability.conference.repository.UserRepository;
 import com.ubb.scalability.conference.service.ArticleService;
@@ -12,12 +13,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = ConferenceApplication.class)
+@SpringBootTest(classes = {ConferenceApplication.class})
+@ActiveProfiles("test")
 public class ArticleServiceTest {
 
     @Autowired
@@ -30,7 +33,7 @@ public class ArticleServiceTest {
     private ArticleService articleService;
 
     @Before
-    public void setUp() {
+    public void setUp() throws ClassNotFoundException {
 
         User user = new User();
         user.setId(1);
@@ -52,6 +55,7 @@ public class ArticleServiceTest {
         article.setId(1);
         article.setDomain("nature");
         article.setAuthor(1);
+        article.setDescription("test");
         articleRepository.save(article);
 
         Article article2 = new Article();
@@ -71,11 +75,12 @@ public class ArticleServiceTest {
         article4.setDomain("medicine");
         article4.setAuthor(2);
         articleRepository.save(article4);
+
     }
 
     @Test
     public void filterArticlesByDomain() {
-        List<Article> articles = articleService.getArticles("nature",null);
+        List<ArticleDTO> articles = articleService.getArticles("nature",null);
         Assert.assertNotNull(articles);
         articles.forEach(article -> Assert.assertEquals("nature",article.getDomain()));
         Assert.assertEquals(2,articles.size());
@@ -83,36 +88,36 @@ public class ArticleServiceTest {
 
     @Test
     public void filterArticlesByAuthor() {
-        List<Article> articles = articleService.getArticles(null,new UserDTO("john","doe"));
+        List<ArticleDTO> articles = articleService.getArticles(null,new UserDTO("john","doe"));
         Assert.assertNotNull(articles);
         articles.forEach(article -> {
-            Assert.assertEquals("john",article.getUsersByAuthor().getFirstName());
-            Assert.assertEquals("doe", article.getUsersByAuthor().getLastName());
+            Assert.assertEquals("john",article.getAuthor().getFirstName());
+            Assert.assertEquals("doe", article.getAuthor().getLastName());
         });
         Assert.assertEquals(2, articles.size());
     }
 
     @Test
     public void filterArticlesByDomainAndAuthor() {
-        List<Article> articles = articleService.getArticles("science",new UserDTO("mary","jane"));
+        List<ArticleDTO> articles = articleService.getArticles("science",new UserDTO("mary","jane"));
         Assert.assertNotNull(articles);
         articles.forEach(article -> {
             Assert.assertEquals("science", article.getDomain());
-            Assert.assertEquals("mary", article.getUsersByAuthor().getFirstName());
-            Assert.assertEquals("jane", article.getUsersByAuthor().getLastName());
+            Assert.assertEquals("mary", article.getAuthor().getFirstName());
+            Assert.assertEquals("jane", article.getAuthor().getLastName());
         });
         Assert.assertEquals(1,articles.size());
     }
 
     @Test
     public void getArticlesNoFilter() {
-        List<Article> articles = articleService.getArticles(null, null);
+        List<ArticleDTO> articles = articleService.getArticles(null, null);
         Assert.assertEquals(4,articles.size());
     }
 
     @Test
     public void getArticlesFilterNotFound() {
-        List<Article> articles = articleService.getArticles("non existent domain",null);
+        List<ArticleDTO> articles = articleService.getArticles("non existent domain",null);
         Assert.assertTrue(articles.isEmpty());
     }
 }

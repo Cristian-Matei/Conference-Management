@@ -1,6 +1,7 @@
 package com.ubb.scalability.conference.service;
 
-import com.ubb.scalability.conference.controller.UserDTO;
+import com.ubb.scalability.conference.model.ArticleDTO;
+import com.ubb.scalability.conference.model.UserDTO;
 import com.ubb.scalability.conference.model.Article;
 import com.ubb.scalability.conference.model.User;
 import com.ubb.scalability.conference.repository.ArticleRepository;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -27,20 +29,24 @@ public class ArticleService {
      * Finds a list of articles based on given filter criteria which are optional
      * @param domain of an article
      * @param author of an article {@link UserDTO}
-     * @return a list of articles
+     * @return a list of articles mapped to {@link ArticleDTO}
      */
-    public List<Article> getArticles(String domain, UserDTO author) {
-        if(domain != null && author != null) {
-            User user = userRepository.findByName(author.getFirstName(),author.getLastName());
-            return articleRepository.findAll(Specification.where(hasDomain(domain).and(hasAuthor(user.getId()))));
+    public List<ArticleDTO> getArticles(String domain, UserDTO author) {
+        List<Article> articles = new ArrayList<>();
+        if (domain != null && author != null) {
+            User user = userRepository.findByName(author.getFirstName(), author.getLastName());
+            articles = articleRepository.findAll(Specification.where(hasDomain(domain).and(hasAuthor(user.getId()))));
         }
-        if(domain != null) {
-            return articleRepository.findAll(hasDomain(domain));
+        if (domain != null) {
+            articles = articleRepository.findAll(hasDomain(domain));
         } else if (author != null) {
-            User user = userRepository.findByName(author.getFirstName(),author.getLastName());
-            return articleRepository.findAll(hasAuthor(user.getId()));
+            User user = userRepository.findByName(author.getFirstName(), author.getLastName());
+            articles = articleRepository.findAll(hasAuthor(user.getId()));
         }
-        return articleRepository.findAll();
+        if (domain == null && author == null) {
+            articles = articleRepository.findAll();
+        }
+        return articles.stream().map(Article::toArticleDTO).collect(Collectors.toList());
     }
 
     private static Specification<Article> hasDomain(final String domain) {
