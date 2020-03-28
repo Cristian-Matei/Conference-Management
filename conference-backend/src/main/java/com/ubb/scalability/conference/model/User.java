@@ -15,13 +15,10 @@ public class User {
     private String affiliation;
     private String email;
     private String password;
-    private Boolean emailVerified = false;
-    private String providerId;
 
     @NotNull
     @Enumerated(EnumType.STRING)
     private AuthProvider provider;
-
 
     private Collection<Role> roles;
 
@@ -85,20 +82,6 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    @Basic
-    @Column(name = "email_verified", nullable = false)
-    public Boolean getEmailVerified() { return emailVerified; }
-
-    public void setEmailVerified(Boolean emailVerified) { this.emailVerified = emailVerified; }
-
-    public String getProviderId() {
-        return providerId;
-    }
-
-    public void setProviderId(String providerId) {
-        this.providerId = providerId;
     }
 
     public AuthProvider getProvider() {
