@@ -2,7 +2,6 @@ package com.ubb.scalability.conference.controller;
 
 
 import com.ubb.scalability.conference.exception.BadRequestException;
-import com.ubb.scalability.conference.model.AuthProvider;
 import com.ubb.scalability.conference.model.Role;
 import com.ubb.scalability.conference.model.User;
 import com.ubb.scalability.conference.payload.ApiResponse;
@@ -68,7 +67,7 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
-        if(userRepository.existsByEmail(signUpRequest.getEmail())) {
+        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
             throw new BadRequestException("Email address already in use.");
         }
 
@@ -78,7 +77,6 @@ public class AuthController {
         user.setLastName(signUpRequest.getLastName());
         user.setEmail(signUpRequest.getEmail());
         user.setPassword(signUpRequest.getPassword());
-        user.setProvider(AuthProvider.local);
         user.setAffiliation(signUpRequest.getAffiliation());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 

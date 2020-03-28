@@ -2,7 +2,6 @@ package com.ubb.scalability.conference.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.Objects;
 
@@ -15,10 +14,6 @@ public class User {
     private String affiliation;
     private String email;
     private String password;
-
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    private AuthProvider provider;
 
     private Collection<Role> roles;
 
@@ -82,14 +77,6 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public AuthProvider getProvider() {
-        return provider;
-    }
-
-    public void setProvider(AuthProvider provider) {
-        this.provider = provider;
     }
 
     @Override
