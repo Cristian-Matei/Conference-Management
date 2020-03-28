@@ -23,6 +23,10 @@ public class ArticleService {
     @Autowired
     private UserRepository userRepository;
 
+    public void saveArticle(Article article) {
+        articleRepository.save(article);
+    }
+
     /***
      * Finds a list of articles based on given filter criteria which are optional
      * @param domain of an article

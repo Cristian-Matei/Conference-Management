@@ -29,5 +29,11 @@ public class ArticleController {
         if(firstName != null && lastName != null){
             userDTO = new UserDTO(firstName,lastName);
         }
-        return articleService.getArticles(domain,userDTO);}
+        return articleService.getArticles(domain,userDTO);
+    }
+
+    @RequestMapping(value = "/", method = RequestMethod.POST)
+    public void saveArticle(@RequestBody Article article) {
+        articleService.saveArticle(article);
+    }
 }
