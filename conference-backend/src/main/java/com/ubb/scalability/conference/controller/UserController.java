@@ -11,11 +11,14 @@ import java.util.List;
 @RequestMapping(value="conference/users")
 public class UserController {
 
+    private final UserService userService;
+
     @Autowired
-    private UserService userService;
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
-
-    @RequestMapping(value = "/", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     public void saveUsers(@RequestBody User user) {
         userService.saveUser(user);
     }
@@ -30,7 +33,7 @@ public class UserController {
         userService.deleteUser(id);
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public List<User> getUsers() {
         return userService.getAllUsers();
     }
