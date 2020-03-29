@@ -4,7 +4,8 @@ import './index.css';
 import App from './App';
 import Login from './components/Login';
 import Signup from './components/Signup';
-import Chat from './components/Chat'
+import Chat from './components/Chat';
+import Main from './components/Main';
 import { Route, BrowserRouter as Router } from 'react-router-dom';
 
 const routing = (
@@ -13,6 +14,7 @@ const routing = (
             <Route exact path="/" component = {Homepage} />
             <Route path="/signup" component = {SignupPage} />
             <Route path="/chat" component = {Chat} />
+            <Route path="/main" component = {Main} />
         </div>
     </Router>
 );

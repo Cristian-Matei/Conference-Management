@@ -8,16 +8,18 @@ class Login extends Component {
         this.state = {
             email : "",
             password: "",
-            token: ""
+            token: "",
+            received_roles : null
         }
     }
 
     redirect = () => {
         this.props.history.push({
-            pathname: '/chat',
+            pathname: '/main',
             state: {
                 email: this.state.email,
-                token: this.state.token
+                token: this.state.token,
+                roles: this.state.received_roles
             }
         });
     }
@@ -32,6 +34,8 @@ class Login extends Component {
 
         axios.post(apiBaseUrl, payload).then((response) => {
             if (response.status === 200) {
+                var received_roles = response.data.roles.map(x => x.roleName);
+                this.setState( {received_roles: received_roles});
                 this.setState({ token: response.data.accessToken });
                 //alert(this.state.token);
                 this.redirect();
