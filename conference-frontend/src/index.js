@@ -7,6 +7,7 @@ import Signup from './components/Signup';
 import Filter from './components/FilterArticles';
 import { Route, BrowserRouter as Router } from 'react-router-dom';
 import FilterArticles from './components/FilterArticles';
+import UploadArticles from './components/UploadArticles';
 
 const routing = (
     <Router>
@@ -14,6 +15,7 @@ const routing = (
             <Route exact path="/" component = {Homepage} />
             <Route path="/signup" component = {SignupPage} />
             <Route path="/filter" component = {FilterArticlesPage} />
+            <Route path="/upload" component = {UploadArticlePage} />
         </div>
     </Router>
 );
@@ -38,6 +40,14 @@ function FilterArticlesPage(){
     return(
         <App>
             <FilterArticles />
+        </App>
+    )
+}
+
+function UploadArticlePage() {
+    return(
+        <App>
+            <UploadArticles />
         </App>
     )
 }

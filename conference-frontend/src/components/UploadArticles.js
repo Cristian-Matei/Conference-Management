@@ -2,6 +2,13 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 
+const token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNTg1NDk5OTU2LCJleHAiOjE1ODYzNjM5NTZ9.bi3mbVgjyruvOzCW1eam-rZuifxF9LruAFKogNj4c9BriZAMXAoYYxM-ZpgwiiB63bDTin96jHi6w8lEP2UBgA";
+const config = {
+    headers: { Authorization: `Bearer ${token}` }
+};
+
+
+
 class Upload extends Component {
     constructor(props) {
         super(props);
@@ -10,15 +17,25 @@ class Upload extends Component {
         }
     }
 
+    
     uploadArticle = () => {
    
-        let title = this.refs.title.value;
-        let article = this.refs.article.vlue;
-        let firstName = this.refs.firstName.value;
-        let lastName = this.refs.lastName.value;
-        let domain = this.refs.domain.value;
-        let abstract = this.refs.abstract.value;
-
+      
+       console.log("am intrat0");
+        
+        axios.post('http://localhost:8080/conference/articles/',
+         {
+            "title":this.refs.title.value,
+            "author" : {"id":1},
+            "domain":this.refs.domain.value,
+            "description":this.refs.abstract.value,
+            "link": this.refs.link.value,
+         },
+         config
+        ).then((response)=>{
+            console.log("Am trimis");
+        });
+        
         
     }
 
@@ -38,15 +55,11 @@ class Upload extends Component {
                                 <input style={{ width: '200px' }} className="mdl-text-field__input" type="text" id="title" ref="title" />
                             </div>
                             <div>
-                                <label className="mdl-text-field" htmlFor="article">D.O.I</label>
-                                <input style={{ width: '200px' }} className="mdl-text-field__input" type="text" id="article" ref="article" /></div><div>
-                                <label className="mdl-text-field" htmlFor="firstName">Author First Name   </label>
-                                <input style={{ width: '200px' }} className="mdl-text-field__input" type="text" id="firstName" ef="firstName" /></div><div>
-                                <label className="mdl-text-field" htmlFor="lastName">Author Last Name   </label>
-                                <input style={{ width: '200px' }} className="mdl-text-field__input" type="text" id="lastName"  ref="lastName"/>  </div>
+                            <label className="mdl-text-field" htmlFor="link">Link</label>
+                            <input style={{ width: '200px' }} className="mdl-text-field__input" type="text" id="link" ref="link" /></div><div>
                             <label className="mdl-text-field" htmlFor="domain">Domain   </label>
                             <input style={{ width: '200px' }} className="mdl-text-field__input" type="text" id="domain" ref="domain"/>
-
+                            </div>
                         </div>
                         <h5 style={{ padding: '20px' }}>Abstract</h5>
                         <div class="mdl-textfield mdl-js-textfield">
