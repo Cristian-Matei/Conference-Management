@@ -16,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
@@ -33,7 +34,7 @@ public class ArticleServiceTest {
     private ArticleService articleService;
 
     @Before
-    public void setUp() throws ClassNotFoundException {
+    public void setUp() {
 
         User user = new User();
         user.setId(1);
@@ -54,26 +55,26 @@ public class ArticleServiceTest {
         Article article = new Article();
         article.setId(1);
         article.setDomain("nature");
-        article.setAuthor(1);
+        article.setAuthor(user);
         article.setDescription("test");
         articleRepository.save(article);
 
         Article article2 = new Article();
         article2.setId(2);
         article2.setDomain("science");
-        article2.setAuthor(2);
+        article2.setAuthor(user2);
         articleRepository.save(article2);
 
         Article article3 = new Article();
         article3.setId(3);
         article3.setDomain("nature");
-        article3.setAuthor(1);
+        article3.setAuthor(user);
         articleRepository.save(article3);
 
         Article article4 = new Article();
         article4.setId(4);
         article4.setDomain("medicine");
-        article4.setAuthor(2);
+        article4.setAuthor(user2);
         articleRepository.save(article4);
 
     }
@@ -112,6 +113,7 @@ public class ArticleServiceTest {
     @Test
     public void getArticlesNoFilter() {
         List<ArticleDTO> articles = articleService.getArticles(null, null);
+        System.out.println(articles);
         Assert.assertEquals(4,articles.size());
     }
 

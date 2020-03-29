@@ -45,4 +45,14 @@ public class ArticleDTO {
     public void setId(int id) {
         this.id = id;
     }
+
+    @Override
+    public String toString() {
+        return "ArticleDTO{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", domain='" + domain + '\'' +
+                ", author=" + author +
+                '}';
+    }
 }

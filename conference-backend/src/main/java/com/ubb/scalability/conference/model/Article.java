@@ -35,6 +35,7 @@ public class Article {
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="author")
     public User getAuthor() {
         return author;
     }
@@ -96,7 +97,7 @@ public class Article {
         articleDTO.setId(getId());
         articleDTO.setTitle(getTitle());
         articleDTO.setDomain(getDomain());
-        articleDTO.setAuthor(getUsersByAuthor().toUserDTO());
+        articleDTO.setAuthor(getAuthor().toUserDTO());
         return articleDTO;
     }
 }
