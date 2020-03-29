@@ -35,7 +35,6 @@ public class Article {
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="author")
     public User getAuthor() {
         return author;
     }
