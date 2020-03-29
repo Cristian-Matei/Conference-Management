@@ -1,9 +1,11 @@
 package com.ubb.scalability.conference.service;
 
 import com.ubb.scalability.conference.model.ArticleDTO;
+import com.ubb.scalability.conference.model.User;
 import com.ubb.scalability.conference.model.UserDTO;
 import com.ubb.scalability.conference.model.Article;
 import com.ubb.scalability.conference.repository.ArticleRepository;
+import com.ubb.scalability.conference.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,6 +42,8 @@ public class ArticleService {
         User user = userRepository.findUserByFirstNameAndLastName(author.getFirstName(), author.getLastName());
         return articleRepository.findArticlesByDomainAndAuthor(domain, user).stream().map(Article::toArticleDTO)
                 .collect(Collectors.toList());
+    }
+
     public void saveArticle(Article article) {
         articleRepository.save(article);
     }

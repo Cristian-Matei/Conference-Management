@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "conference/articles")
@@ -32,7 +33,7 @@ public class ArticleController {
         return articleService.getArticlesByAuthor(userDTO);
     }
 
-    @RequestMapping(value = "/filterall", method = RequestMethod.GET)
+    @RequestMapping(value = "/filter", method = RequestMethod.GET)
     public List<ArticleDTO> filterArticlesByDomainAndAuthor(@RequestParam("domain") String domain,
                                                             @RequestParam("firstName") String firstName,
                                                             @RequestParam("lastName") String lastName) {
