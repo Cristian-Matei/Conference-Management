@@ -90,4 +90,13 @@ public class Article {
     public int hashCode() {
         return Objects.hash(id, title, author, domain, description, link);
     }
+
+    public ArticleDTO toArticleDTO(){
+        ArticleDTO articleDTO = new ArticleDTO();
+        articleDTO.setId(getId());
+        articleDTO.setTitle(getTitle());
+        articleDTO.setDomain(getDomain());
+        articleDTO.setAuthor(getAuthor().toUserDTO());
+        return articleDTO;
+    }
 }
