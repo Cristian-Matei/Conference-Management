@@ -3,6 +3,7 @@ package com.ubb.scalability.conference.controller;
 import com.ubb.scalability.conference.model.User;
 import com.ubb.scalability.conference.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,6 +29,7 @@ public class UserController {
         return userService.getUser(id);
     }
 
+    @PreAuthorize("hasAuthority('organizer')")
     @RequestMapping(value="/{id}", method = RequestMethod.DELETE)
     public void deleteUsers(@PathVariable("id") int id) {
         userService.deleteUser(id);
