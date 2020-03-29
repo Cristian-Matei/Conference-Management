@@ -17,21 +17,6 @@ public class ArticleController {
     @Autowired
     private ArticleService articleService;
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "domain", paramType = "query", dataType = "string", format = "String"),
-            @ApiImplicitParam(name = "firstName", paramType = "query", dataType = "string", format = "String"),
-            @ApiImplicitParam(name = "lastName", paramType = "query", dataType = "string", format = "String")
-    })
-    public List<Article> findArticles(@RequestParam(required = false) String domain, @RequestParam(required = false) String firstName,
-                                      @RequestParam(required = false) String lastName){
-        UserDTO userDTO = null;
-        if(firstName != null && lastName != null){
-            userDTO = new UserDTO(firstName,lastName);
-        }
-        return articleService.getArticles(domain,userDTO);
-    }
-
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public void saveArticle(@RequestBody Article article) {
         articleService.saveArticle(article);

@@ -20,38 +20,7 @@ public class ArticleService {
     @Autowired
     private ArticleRepository articleRepository;
 
-    @Autowired
-    private UserRepository userRepository;
-
     public void saveArticle(Article article) {
         articleRepository.save(article);
-    }
-
-    /***
-     * Finds a list of articles based on given filter criteria which are optional
-     * @param domain of an article
-     * @param author of an article {@link UserDTO}
-     * @return a list of articles
-     */
-    public List<Article> getArticles(String domain, UserDTO author) {
-        if(domain != null && author != null) {
-            User user = userRepository.findByName(author.getFirstName(),author.getLastName());
-            return articleRepository.findAll(Specification.where(hasDomain(domain).and(hasAuthor(user.getId()))));
-        }
-        if(domain != null) {
-            return articleRepository.findAll(hasDomain(domain));
-        } else if (author != null) {
-            User user = userRepository.findByName(author.getFirstName(),author.getLastName());
-            return articleRepository.findAll(hasAuthor(user.getId()));
-        }
-        return articleRepository.findAll();
-    }
-
-    private static Specification<Article> hasDomain(final String domain) {
-        return (article, cq, cb) -> cb.equal(article.get("domain"), domain);
-    }
-
-    private static Specification<Article> hasAuthor(final Integer authorId) {
-        return (article, cq, cb) -> cb.equal(article.get("author"), authorId);
     }
 }
