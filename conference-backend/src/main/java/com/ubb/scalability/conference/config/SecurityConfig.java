@@ -106,12 +106,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .antMatchers("/auth/**", "/oauth2/**")
                 .permitAll()
-//                .antMatchers("/conference/**").hasAuthority("organizer")
-                .antMatchers(
-                        "/secured/**/**",
-                        "/secured/success",
-                        "/secured/socket",
-                        "/secured/success").authenticated()
                 .anyRequest()
                 .authenticated();
 
