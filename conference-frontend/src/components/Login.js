@@ -9,7 +9,6 @@ class Login extends Component {
             password: ""
         }
     }
-
     sendData = () => {
         var apiLoginUrl = "whatever";
         var payload = {
@@ -24,7 +23,9 @@ class Login extends Component {
     }
     render() {
         return (
+            
             <div class="centered">
+                
 				<div class="demo-card-wide mdl-card mdl-shadow--2dp">
 					<div class="mdl-card__title">
 						<h2 class="mdl-card__title-text">Welcome to this year's edition!</h2>
@@ -46,7 +47,7 @@ class Login extends Component {
 					<div class="mdl-card__actions mdl-card--border">
 						<a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="/">Login</a>
 						<a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="/signup">New user? Sign up here!</a>
-					</div>
+                    </div>
 				</div>
 			</div>
         );

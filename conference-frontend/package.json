@@ -3,14 +3,23 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material/textfield": "^5.1.0",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.4.1",
     "@testing-library/user-event": "^7.2.1",
     "axios": "^0.19.2",
+    "bootstrap": "^4.4.1",
+    "moment": "^2.24.0",
     "react": "^16.13.0",
+    "react-data-table-component": "^6.3.1",
     "react-dom": "^16.13.0",
+    "react-month-picker": "^1.3.11",
+    "react-object-list": "0.2.9",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "3.4.0"
+    "react-scripts": "3.4.0",
+    "react-select": "^3.1.0",
+    "react-table": "^7.0.0",
+    "styled-components": "^5.0.1"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -32,5 +41,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/react-select": "^3.0.11"
   }
 }
