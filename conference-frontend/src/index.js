@@ -4,13 +4,16 @@ import './index.css';
 import App from './App';
 import Login from './components/Login';
 import Signup from './components/Signup';
+import Filter from './components/FilterArticles';
 import { Route, BrowserRouter as Router } from 'react-router-dom';
+import FilterArticles from './components/FilterArticles';
 
 const routing = (
     <Router>
         <div>
             <Route exact path="/" component = {Homepage} />
             <Route path="/signup" component = {SignupPage} />
+            <Route path="/filter" component = {FilterArticlesPage} />
         </div>
     </Router>
 );
@@ -30,6 +33,15 @@ function SignupPage(){
         </App>
     )
 }
+
+function FilterArticlesPage(){
+    return(
+        <App>
+            <FilterArticles />
+        </App>
+    )
+}
+
 ReactDOM.render(routing, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
