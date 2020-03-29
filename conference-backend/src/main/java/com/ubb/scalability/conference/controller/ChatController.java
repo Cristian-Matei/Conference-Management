@@ -12,16 +12,31 @@ import java.util.Objects;
 @Controller
 public class ChatController {
 
-    @MessageMapping("/chat.sendMessage")
+    @MessageMapping("/chat.sendMessageToPublicChat")
     @SendTo("/topic/public")
-    public ChatMessage sendMessage(@Payload ChatMessage chatMessage) {
+    public ChatMessage sendMessageToPublicChat(@Payload ChatMessage chatMessage) {
         return chatMessage;
     }
 
-    @MessageMapping("/chat.addUser")
+    @MessageMapping("/chat.addUserToPublicChat")
     @SendTo("/topic/public")
-    public ChatMessage addUser(@Payload ChatMessage chatMessage,
+    public ChatMessage addUserToPublicChat(@Payload ChatMessage chatMessage,
                                SimpMessageHeaderAccessor headerAccessor) {
+        // Add username in web socket session
+        Objects.requireNonNull(headerAccessor.getSessionAttributes()).put("username", chatMessage.getSender());
+        return chatMessage;
+    }
+
+    @MessageMapping("/chat.sendMessageToOrganizersChat")
+    @SendTo("/topic/organizers")
+    public ChatMessage sendMessageToOrganizersChat(@Payload ChatMessage chatMessage) {
+        return chatMessage;
+    }
+
+    @MessageMapping("/chat.addUserToOrganizersChat")
+    @SendTo("/topic/organizers")
+    public ChatMessage addUserToOrganizersChat(@Payload ChatMessage chatMessage,
+                                           SimpMessageHeaderAccessor headerAccessor) {
         // Add username in web socket session
         Objects.requireNonNull(headerAccessor.getSessionAttributes()).put("username", chatMessage.getSender());
         return chatMessage;
