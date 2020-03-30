@@ -41,7 +41,7 @@ class Upload extends Component {
 
                 <div className="demo-card-wide mdl-card mdl-shadow--2dp">
                     <div className="mdl-card__title">
-                        <h2 className="mdl-card__title-text">Upload Article & Abstract</h2>
+                        <h2 className="mdl-card__title-text">Upload Article </h2>
                     </div>
                     <div>
                         <div >
@@ -56,10 +56,10 @@ class Upload extends Component {
                             <input style={{ width: '200px' }} className="mdl-text-field__input" type="text" id="domain" ref="domain"/>
                             </div>
                         </div>
-                        <h5 style={{ padding: '20px' }}>Abstract</h5>
+                        <h5 style={{ padding: '20px' }}>Description</h5>
                         <div class="mdl-textfield mdl-js-textfield">
                             <textarea className="mdl-textfield__input" type="text" rows="10" id="description" ref="abstract"></textarea>
-                            <label className="mdl-textfield__label" htmlFor="abstract">Write your abstract here...</label>
+                            <label className="mdl-textfield__label" htmlFor="abstract">Write your description here...</label>
                         </div>
                         <div class="mdl-textfield mdl-js-textfield">
                             <button className="mdl-button mdl-js-button mdl-button--raised" onClick={this.uploadArticle}>Submit</button>
