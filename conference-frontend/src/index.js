@@ -9,6 +9,7 @@ import { Route, BrowserRouter as Router } from 'react-router-dom';
 
 import UploadArticles from './components/UploadArticles';
 import RegisterForATalk from './components/RegisterForATalk';
+import ManageRooms from './components/ManageRooms';
 const routing = (
     <Router>
         <div>
@@ -17,6 +18,7 @@ const routing = (
          
             <Route path="/upload" component = {UploadArticlePage} />
             <Route path="/talk" component = {RegisterForATalkPage} />
+            <Route path="/manage" component = {ManageRoomsPage}/>
         </div>
     </Router>
 );
@@ -57,6 +59,14 @@ function RegisterForATalkPage(){
     return(
         <App>
             <RegisterForATalk />
+        </App>
+    )
+}
+
+function ManageRoomsPage(){
+    return(
+        <App>
+            <ManageRooms />
         </App>
     )
 }
