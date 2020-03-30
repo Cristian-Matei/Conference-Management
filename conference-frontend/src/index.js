@@ -4,18 +4,19 @@ import './index.css';
 import App from './App';
 import Login from './components/Login';
 import Signup from './components/Signup';
-import Filter from './components/FilterArticles';
-import { Route, BrowserRouter as Router } from 'react-router-dom';
-import FilterArticles from './components/FilterArticles';
-import UploadArticles from './components/UploadArticles';
 
+import { Route, BrowserRouter as Router } from 'react-router-dom';
+
+import UploadArticles from './components/UploadArticles';
+import RegisterForATalk from './components/RegisterForATalk';
 const routing = (
     <Router>
         <div>
             <Route exact path="/" component = {Homepage} />
             <Route path="/signup" component = {SignupPage} />
-            <Route path="/filter" component = {FilterArticlesPage} />
+         
             <Route path="/upload" component = {UploadArticlePage} />
+            <Route path="/talk" component = {RegisterForATalkPage} />
         </div>
     </Router>
 );
@@ -36,18 +37,26 @@ function SignupPage(){
     )
 }
 
-function FilterArticlesPage(){
-    return(
-        <App>
-            <FilterArticles />
-        </App>
-    )
-}
+
+
+
+
+
+
+
 
 function UploadArticlePage() {
     return(
         <App>
             <UploadArticles />
+        </App>
+    )
+}
+
+function RegisterForATalkPage(){
+    return(
+        <App>
+            <RegisterForATalk />
         </App>
     )
 }
