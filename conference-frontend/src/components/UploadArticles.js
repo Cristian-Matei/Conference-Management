@@ -2,11 +2,7 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 
-const token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNTg1NDk5OTU2LCJleHAiOjE1ODYzNjM5NTZ9.bi3mbVgjyruvOzCW1eam-rZuifxF9LruAFKogNj4c9BriZAMXAoYYxM-ZpgwiiB63bDTin96jHi6w8lEP2UBgA";
-const config = {
-    headers: { Authorization: `Bearer ${token}` }
-};
-
+const token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNTg1NTY0MDkxLCJleHAiOjE1ODY0MjgwOTF9.BpOcah-IirZu4dhu4NLt5ROfQj3NLo_WB6sM_4uzy5zeV5or6lkvbPvnri4xa_jqsLZ7vL5KIkgRu-U133zdvQ";
 
 
 class Upload extends Component {
@@ -19,21 +15,20 @@ class Upload extends Component {
 
     
     uploadArticle = () => {
-   
-      
-       console.log("am intrat0");
-        
+
         axios.post('http://localhost:8080/conference/articles/',
-         {
+            {
             "title":this.refs.title.value,
             "author" : {"id":1},
             "domain":this.refs.domain.value,
             "description":this.refs.abstract.value,
-            "link": this.refs.link.value,
-         },
-         config
+            "link": this.refs.link.value
+            },{
+            headers:{
+                Authorization: `Bearer ${token}` }
+            }
         ).then((response)=>{
-            console.log("Am trimis");
+            
         });
         
         
