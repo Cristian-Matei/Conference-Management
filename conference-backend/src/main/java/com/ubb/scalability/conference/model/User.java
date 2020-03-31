@@ -110,4 +110,11 @@ public class User {
     public void setRoles(Collection<Role> roles) {
         this.roles = roles;
     }
+
+    public UserDTO toUserDTO() {
+        UserDTO userDTO = new UserDTO();
+        userDTO.setFirstName(getFirstName());
+        userDTO.setLastName(getLastName());
+        return userDTO;
+    }
 }

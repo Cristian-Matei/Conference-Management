@@ -65,7 +65,7 @@ public class AuthController {
         String token = tokenProvider.createToken(authentication);
         if (userOptional.isPresent()) {
             List<Role> roles = new ArrayList<>(userOptional.get().getRoles());
-            return ResponseEntity.ok(new AuthResponse(token, roles));
+            return ResponseEntity.ok(new AuthResponse(token, roles, userOptional.get().getId()));
         }
         return ResponseEntity.ok(new AuthResponse(token));
     }

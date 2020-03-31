@@ -9,17 +9,19 @@ class Login extends Component {
             email : "",
             password: "",
             token: "",
-            received_roles : null
+            received_roles : null,
+            userId: 0
         }
     }
 
     redirect = () => {
         this.props.history.push({
-            pathname: '/main',
+            pathname: '/menu',
             state: {
                 email: this.state.email,
                 token: this.state.token,
-                roles: this.state.received_roles
+                roles: this.state.received_roles,
+                userId: this.state.userId
             }
         });
     }
@@ -34,12 +36,13 @@ class Login extends Component {
 
         axios.post(apiBaseUrl, payload).then((response) => {
             if (response.status === 200) {
+  
                 var received_roles = response.data.roles.map(x => x.roleName);
                 this.setState( {received_roles: received_roles});
                 this.setState({ token: response.data.accessToken });
-                //alert(this.state.token);
+                this.setState({userId: response.data.userId});
                 this.redirect();
-                //alert(response.data.accessToken);
+
             }
             if (response.status === 401) {
                 alert("Incorrect credentials! Try again");

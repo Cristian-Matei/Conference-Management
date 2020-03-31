@@ -28,13 +28,13 @@ public class ChatController {
     }
 
     @MessageMapping("/chat.sendMessageToOrganizersChat")
-    @SendTo("/topic/organizers")
+    @SendTo("secured/topic/organizers")
     public ChatMessage sendMessageToOrganizersChat(@Payload ChatMessage chatMessage) {
         return chatMessage;
     }
 
     @MessageMapping("/chat.addUserToOrganizersChat")
-    @SendTo("/topic/organizers")
+    @SendTo("secured/topic/organizers")
     public ChatMessage addUserToOrganizersChat(@Payload ChatMessage chatMessage,
                                            SimpMessageHeaderAccessor headerAccessor) {
         // Add username in web socket session
