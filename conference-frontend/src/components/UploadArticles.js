@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 
-const token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNTg1NTY0MDkxLCJleHAiOjE1ODY0MjgwOTF9.BpOcah-IirZu4dhu4NLt5ROfQj3NLo_WB6sM_4uzy5zeV5or6lkvbPvnri4xa_jqsLZ7vL5KIkgRu-U133zdvQ";
-
-
 class Upload extends Component {
     constructor(props) {
         super(props);
         this.state = {
-           
+            userId: this.props.location.state.userId,
+            email: this.props.location.state.email,
+            token: this.props.location.state.token,
+            roles: this.props.location.state.roles,
         }
     }
 
@@ -19,21 +19,35 @@ class Upload extends Component {
         axios.post('http://localhost:8080/conference/articles/',
             {
             "title":this.refs.title.value,
-            "author" : {"id":1},
+            "author" : {"id":this.state.userId},
             "domain":this.refs.domain.value,
             "description":this.refs.abstract.value,
             "link": this.refs.link.value
             },{
             headers:{
-                Authorization: `Bearer ${token}` }
+                Authorization: `Bearer ${this.state.token}` }
             }
         ).then((response)=>{
-            
+            if(response.status === 200)
+                alert('Added with success')
+            else
+                alert('A problem occured, please try again!');
         });
         
         
     }
 
+    goBack = () => {
+        this.props.history.push({
+            pathname: '/menu',
+            state: {
+                email: this.state.email,
+                token: this.state.token,
+                roles: this.state.received_roles,
+                userId: this.state.userId
+            }
+        });
+    }
     render() {
         return (
 
@@ -63,6 +77,9 @@ class Upload extends Component {
                         </div>
                         <div class="mdl-textfield mdl-js-textfield">
                             <button className="mdl-button mdl-js-button mdl-button--raised" onClick={this.uploadArticle}>Submit</button>
+                        </div>
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <button className="mdl-button mdl-js-button mdl-button--raised" onClick={this.goBack}>Back</button>
                         </div>
                     </div>
                 </div>
