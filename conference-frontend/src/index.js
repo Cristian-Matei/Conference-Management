@@ -8,7 +8,6 @@ import { Route, BrowserRouter as Router } from 'react-router-dom';
 import FilterArticles from './components/FilterArticles';
 import UploadArticles from './components/UploadArticles';
 import Menu from './components/Menu';
-import RegisterForTalks from './components/RegisterForATalk';
 import RegisterForATalk from './components/RegisterForATalk';
 
 const routing = (
