@@ -1,7 +1,10 @@
 package com.ubb.scalability.conference.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "articles", schema = "conference")
@@ -12,7 +15,7 @@ public class Article {
     private String domain;
     private String description;
     private String link;
-    private Talk talk;
+    private Set<Talk> talks;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -74,13 +77,13 @@ public class Article {
         this.link = link;
     }
 
-    @OneToOne(fetch = FetchType.EAGER)
-    public Talk getTalk() {
-        return talk;
+    @OneToMany(mappedBy="article")
+    public Set<Talk> getTalks() {
+        return talks;
     }
 
-    public void setTalk(Talk talk) {
-        this.talk = talk;
+    public void setTalks(Set<Talk> talks) {
+        this.talks = talks;
     }
 
     @Override

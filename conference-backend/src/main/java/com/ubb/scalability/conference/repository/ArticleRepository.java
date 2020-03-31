@@ -14,5 +14,5 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
 
     List<Article> findArticlesByDomainAndAuthor(String domain, User author);
 
-    List<Article> findArticlesByTalkIsNotNull();
+    List<Article> findArticlesByTalksIsNotNull();
 }

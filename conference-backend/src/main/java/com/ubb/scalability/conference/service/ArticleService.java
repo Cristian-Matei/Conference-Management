@@ -46,7 +46,7 @@ public class ArticleService {
     }
 
     public List<ArticleDetailDTO> getArticlesWithTalks() {
-        List<Article> articles = articleRepository.findArticlesByTalkIsNotNull();
+        List<Article> articles = articleRepository.findArticlesByTalksIsNotNull();
         return articles.stream().map(Article::toArticleDetailDTO)
                 .collect(Collectors.toList());
     }

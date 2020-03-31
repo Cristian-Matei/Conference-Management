@@ -70,4 +70,11 @@ public class Room {
     public void setTalks(Collection<Talk> talks) {
         this.talks = talks;
     }
+
+    public RoomDTO toRoomDTO() {
+        RoomDTO roomDTO = new RoomDTO();
+        roomDTO.setName(getName());
+        roomDTO.setPlaces(getPlaces());
+        return roomDTO;
+    }
 }

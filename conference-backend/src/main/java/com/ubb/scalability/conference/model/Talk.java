@@ -27,7 +27,8 @@ public class Talk {
         this.id = id;
     }
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="article_id", nullable=false)
     public Article getArticle() {
         return article;
     }
@@ -116,5 +117,15 @@ public class Talk {
         talkDTO.setAuthor(getArticle().getAuthor().toUserDTO());
 
         return talkDTO;
+    }
+
+    public TalkDetailDTO toTalkDetailDTO() {
+        TalkDetailDTO talkDetailDTO = new TalkDetailDTO();
+        talkDetailDTO.setId(getId());
+        talkDetailDTO.setEndTime(getEndTime());
+        talkDetailDTO.setStartTime(getStartTime());
+        talkDetailDTO.setTitle(getArticle().getTitle());
+        talkDetailDTO.setRoom(getRoom().toRoomDTO());
+        return talkDetailDTO;
     }
 }
