@@ -29,7 +29,7 @@ const customStyles = {
     },
 };
 
-class RegisterForATalk extends Component {
+class ManageRooms extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -74,7 +74,7 @@ class RegisterForATalk extends Component {
 
     unregister = (value) => {
         console.log(value);
-        axios.all([
+       
             axios.post('http://localhost:8080/conference/talks/unregister',
                 
                      {
@@ -84,27 +84,14 @@ class RegisterForATalk extends Component {
                     {headers: {
                         Authorization: `Bearer ${this.state.token}`
                     }}
-            ),
-            axios.get('http://localhost:8080/conference/talks/attendee/' + this.state.userId, {
-                headers: {
-                    Authorization: `Bearer ${this.state.token}`
-                }
-            }),
-            axios.get('http://localhost:8080/conference/talks/available', {
-                params: {
-                    "userId": this.state.userId
-                },
-                headers: {
-                    Authorization: `Bearer ${this.state.token}`
-                }
-            })])
-            .then(axios.spread((resp2, talksResponse, availableResponse) => {
+            )
+            .then(resp2 => {
 
                 this.setState({ registeredTalks: talksResponse.data });
                 this.setState({ availableTaks: availableResponse.data });
                 this.setState({ ok: true });
 
-            }))
+            })
     }
     register = (value) => {
 
@@ -243,4 +230,4 @@ class RegisterForATalk extends Component {
     }
 
 };
-export default withRouter(RegisterForATalk);
+export default withRouter(ManageRooms);
