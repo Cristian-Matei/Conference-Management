@@ -13,7 +13,6 @@ class Menu extends Component {
             token: this.props.location.state.token,
             roles: this.props.location.state.roles,
         }
-        console.log(this.state.userId);
 
     }
 

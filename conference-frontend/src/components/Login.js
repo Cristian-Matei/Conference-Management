@@ -36,15 +36,13 @@ class Login extends Component {
 
         axios.post(apiBaseUrl, payload).then((response) => {
             if (response.status === 200) {
-                console.log("asteapta aici")
-                console.log(response.data);
+  
                 var received_roles = response.data.roles.map(x => x.roleName);
                 this.setState( {received_roles: received_roles});
                 this.setState({ token: response.data.accessToken });
                 this.setState({userId: response.data.userId});
-                //alert(this.state.token);
                 this.redirect();
-                //alert(response.data.accessToken);
+
             }
             if (response.status === 401) {
                 alert("Incorrect credentials! Try again");
