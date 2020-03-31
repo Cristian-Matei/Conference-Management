@@ -103,6 +103,10 @@ public class Talk {
         attendees.add(attendee);
     }
 
+    public void removeAttendee(User attendee) {
+        attendees.remove(attendee);
+    }
+
     public TalkDTO toTalkDTO() {
         TalkDTO talkDTO = new TalkDTO();
 
