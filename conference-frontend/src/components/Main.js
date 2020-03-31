@@ -11,14 +11,15 @@ class Main extends Component {
         };
     }
 
-    redirect = (chatType) => {
+    redirect = (chatType, topic) => {
         this.props.history.push({
             pathname: '/chat',
             state: {
                 email: this.state.email,
                 token: this.state.token,
                 roles: this.state.received_roles,
-                chatType : chatType
+                chatType : chatType,
+                topic: topic
             }
         });
     }
@@ -26,12 +27,12 @@ class Main extends Component {
     ChatLinks = () => {
         if(this.state.roles.includes("organizer")){
             return <Toolbar>
-                <button className="mdl-button" onClick = {() => this.redirect("private")}>Organizer chat</button>
-				<button className="mdl-button" onClick = {() => this.redirect("public")}>Public chat</button>
+                <button className="mdl-button" onClick = {() => this.redirect("private", "/topic/organizers")}>Organizer chat</button>
+				<button className="mdl-button" onClick = {() => this.redirect("public", "/topic/public")}>Public chat</button>
             </Toolbar>
         }
         return <Toolbar>
-        <button className="mdl-button" onClick = {() => this.redirect("public")}>Public chat</button>
+        <button className="mdl-button" onClick = {() => this.redirect("public", "/topic/public")}>Public chat</button>
     </Toolbar>
     };
 
