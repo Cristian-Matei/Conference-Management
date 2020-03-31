@@ -2,6 +2,7 @@ package com.ubb.scalability.conference.model;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
 
@@ -93,5 +94,27 @@ public class Talk {
 
     public void setAttendees(Collection<User> attendees) {
         this.attendees = attendees;
+    }
+
+    public void addAttendee(User attendee) {
+        if(attendees == null) {
+            attendees = new ArrayList();
+        }
+        attendees.add(attendee);
+    }
+
+    public void removeAttendee(User attendee) {
+        attendees.remove(attendee);
+    }
+
+    public TalkDTO toTalkDTO() {
+        TalkDTO talkDTO = new TalkDTO();
+
+        talkDTO.setId(getId());
+        talkDTO.setTitle(getArticle().getTitle());
+        talkDTO.setDomain(getArticle().getDomain());
+        talkDTO.setAuthor(getArticle().getAuthor().toUserDTO());
+
+        return talkDTO;
     }
 }

@@ -1,82 +1,156 @@
 import React, { Component } from 'react';
 
-import Select from 'react-select';
 import { withRouter } from 'react-router-dom';
 import DataTable from "react-data-table-component";
 import axios from 'axios';
 
-const mockData = [{ "title": "Talk1", "domain": "ML", "author": "Eu Eu" }]
-
-const token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNTg1NTY0MDkxLCJleHAiOjE1ODY0MjgwOTF9.BpOcah-IirZu4dhu4NLt5ROfQj3NLo_WB6sM_4uzy5zeV5or6lkvbPvnri4xa_jqsLZ7vL5KIkgRu-U133zdvQ"
 const customStyles = {
     rows: {
-      style: {
-        fontSize: '14px',
-      
-        minHeight: '72px', // override the row height
-      }
+        style: {
+            fontSize: '14px',
+
+            minHeight: '72px', // override the row height
+        }
     },
     headCells: {
-      style: {
-       
+        style: {
+
             fontSize: '14px',
-        paddingLeft: '8px', // override the cell padding for head cells
-        paddingRight: '8px',
-      },
+            paddingLeft: '8px', // override the cell padding for head cells
+            paddingRight: '8px',
+        },
     },
     cells: {
-      style: {
-        fontSize: '14px',
-        paddingLeft: '8px', // override the cell padding for data cells
-        paddingRight: '8px',
-      },
+        style: {
+            fontSize: '14px',
+            paddingLeft: '8px', // override the cell padding for data cells
+            paddingRight: '8px',
+        },
     },
-  };
+};
 
 class RegisterForATalk extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            registeredTalks: mockData,
+            registeredTalks: [],
+            availableTaks: [],
             selectedOption: null,
             ok: false,
+            userId: this.props.location.state.userId,
+            email: this.props.location.state.email,
+            token: this.props.location.state.token,
+            roles: this.props.location.state.roles,
         }
 
     }
-    componenDidMount() {
-        // axios.get('http://localhost:8080/conference/8',{
-        //   headers: {
-        //     Authorization: `Bearer ${token}` 
-        //   }
-        // })
-        //   .then(res => {
-        //     console.log(res.data);
-        //     // const articles = res.data;
-        //     this.setState({registeredTalks:res.data});
-        //     this.setState({ok:true});
-        //     console.log(this.state.registeredTalks);
-        //   })
-        // console.log("Prima data intru aici");
+
+    componentDidMount() {
+        axios.all([
+            axios.get('http://localhost:8080/conference/talks/attendee/' + this.state.userId, {
+                headers: {
+                    Authorization: `Bearer ${this.state.token}`
+                }
+            }),
+            axios.get('http://localhost:8080/conference/talks/available', {
+                params: {
+                    "userId": this.state.userId
+                },
+                headers: {
+                    Authorization: `Bearer ${this.state.token}`
+                }
+            })
+
+        ])
+            .then(axios.spread((talksResponse, availableResponse) => {
+
+                this.setState({ registeredTalks: talksResponse.data });
+                this.setState({ availableTaks: availableResponse.data });
+                this.setState({ ok: true });
+
+            }))
+
     }
 
     unregister = (value) => {
-        console.log(value);
- 
-        //   axios.get('http://localhost:8080/conference/articles/domain/'+this.refs.filter_input.value, 
-        //   {
-        //     headers: {
-        //       Authorization: `Bearer ${token}` 
-        //     }
-        //   })
-        //     .then(res => {
-        //       console.log(res);
-        //       this.setState({ data: res.data });
-        //       this.state.ok = true;
-        //     })
 
+        axios.post('http://localhost:8080/conference/talks/unregister',
+
+            {
+                "userId": this.state.userId,
+                "talkId": value.id
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${this.state.token}`
+                }
+            }
+        ).then(response => {
+
+            axios.get('http://localhost:8080/conference/talks/attendee/' + this.state.userId, {
+                headers: {
+                    Authorization: `Bearer ${this.state.token}`
+                }
+            }).then(talksResponse => {
+
+                this.setState({ registeredTalks: talksResponse.data });
+                axios.get('http://localhost:8080/conference/talks/available', {
+                    params: {
+                        "userId": this.state.userId
+                    },
+                    headers: {
+                        Authorization: `Bearer ${this.state.token}`
+                    }
+                }).then(availableResponse => {
+
+                    this.setState({ availableTaks: availableResponse.data });
+                    this.setState({ ok: true });
+
+                })
+
+            })
+
+
+        })
 
     }
+    register = (value) => {
 
+        axios.post('http://localhost:8080/conference/talks/register',
+
+            {
+                "userId": this.state.userId,
+                "talkId": value.id
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${this.state.token}`
+                }
+            }
+        ).then(response => {
+            axios.get('http://localhost:8080/conference/talks/attendee/' + this.state.userId, {
+                headers: {
+                    Authorization: `Bearer ${this.state.token}`
+                }
+            }).then(talksResponse => {
+                this.setState({ registeredTalks: talksResponse.data });
+                axios.get('http://localhost:8080/conference/talks/available', {
+                    params: {
+                        "userId": this.state.userId
+                    },
+                    headers: {
+                        Authorization: `Bearer ${this.state.token}`
+                    }
+                }).then(availableResponse => {
+                    this.setState({ availableTaks: availableResponse.data });
+                    this.setState({ ok: true });
+                })
+
+            })
+
+        })
+
+    }
     render() {
 
         return (
@@ -87,10 +161,10 @@ class RegisterForATalk extends Component {
                     <div className="mdl-card__title">
                         <h2 className="mdl-card__title-text">Register for a talk</h2>
                     </div>
-                  
+
                     {this.state && this.state.registeredTalks &&
 
-                        <DataTable 
+                        <DataTable
                             title="Already registered"
                             data={this.state.registeredTalks}
                             columns={[
@@ -108,29 +182,30 @@ class RegisterForATalk extends Component {
                                     name: "Author",
                                     selector: "author",
                                     sortable: true,
+                                    cell: cellInfo => cellInfo.author.firstName + " " + cellInfo.author.lastName
                                 },
                                 {
                                     name: "Registered",
-                                    cell: cellInfo  => (
-                                            
-                                            <button style={{color:"blue"}} onClick={(e) => this.unregister(cellInfo)}>unregister</button>
-                                        )
-                                    
+                                    cell: cellInfo => (
+
+                                        <button className="button2" onClick={(e) => this.unregister(cellInfo)}>unregister</button>
+                                    )
+
                                 }
                             ]}
                             fixedHeader
                             fixedHeaderScrollHeight="300px"
-                            customStyles = {customStyles}
+                            customStyles={customStyles}
 
                         />
                     }
-                 
 
-                    {this.state && this.state.registeredTalks &&
+
+                    {this.state && this.state.availableTaks &&
 
                         <DataTable
                             title="Other Talks"
-                            data={this.state.registeredTalks}
+                            data={this.state.availableTaks}
                             columns={[
                                 {
                                     name: "Tile",
@@ -146,18 +221,18 @@ class RegisterForATalk extends Component {
                                     name: "Author",
                                     selector: "author",
                                     sortable: true,
+                                    cell: cellInfo => cellInfo.author.firstName + " " + cellInfo.author.lastName
                                 },
                                 {
                                     name: "Register",
-                                    cell: cellInfo => 
-                                         (
-                                            <input
-                                                type="checkbox"
-                                                className="checkbox"
-                                                onChange = {(e)=>this.unregister(cellInfo)}
-                                            />
+                                    cell: cellInfo =>
+                                        (
+                                            <button
+                                                className="button"
+                                                onClick={(e) => this.register(cellInfo)}
+                                            >Checkin</button>
                                         )
-                                    
+
                                 }
                             ]}
                             fixedHeader
@@ -175,4 +250,4 @@ class RegisterForATalk extends Component {
     }
 
 };
-export default RegisterForATalk;
+export default withRouter(RegisterForATalk);
