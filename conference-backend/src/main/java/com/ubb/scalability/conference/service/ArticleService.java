@@ -17,11 +17,15 @@ import java.util.stream.Collectors;
 @Transactional
 public class ArticleService {
 
-    @Autowired
-    private ArticleRepository articleRepository;
+    private final ArticleRepository articleRepository;
+
+    private final UserRepository userRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    public ArticleService(ArticleRepository articleRepository, UserRepository userRepository) {
+        this.articleRepository = articleRepository;
+        this.userRepository = userRepository;
+    }
 
     public List<ArticleDTO> getArticlesByDomain(String domain) {
         return articleRepository.findArticlesByDomain(domain).stream().map(Article::toArticleDTO)

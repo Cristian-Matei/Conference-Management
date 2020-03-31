@@ -17,11 +17,15 @@ import java.util.stream.Collectors;
 @Transactional
 public class TalkService {
 
-    @Autowired
-    private TalkRepository talkRepository;
+    private final TalkRepository talkRepository;
+
+    private final UserRepository userRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    public TalkService(TalkRepository talkRepository, UserRepository userRepository) {
+        this.talkRepository = talkRepository;
+        this.userRepository = userRepository;
+    }
 
     public List<TalkDTO> getTalksByUserId(Integer userId) {
         User user = new User();
@@ -36,7 +40,9 @@ public class TalkService {
     public void registerForTalk(Integer userId, Integer talkId) {
         Optional<User> user = userRepository.findById(userId);
         Optional<Talk> talk = talkRepository.findById(talkId);
-        talk.get().addAttendee(user.get());
-        talkRepository.save(talk.get());
+        user.ifPresent(u -> talk.ifPresent(t -> {
+            t.addAttendee(u);
+            talkRepository.save(t);
+        }));
     }
 }

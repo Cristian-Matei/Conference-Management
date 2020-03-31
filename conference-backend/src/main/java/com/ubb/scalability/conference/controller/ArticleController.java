@@ -14,13 +14,18 @@ import java.util.List;
 @RequestMapping(value = "conference/articles")
 public class ArticleController {
 
+    private final ArticleService articleService;
+
     @Autowired
-    private ArticleService articleService;
+    public ArticleController(ArticleService articleService) {
+        this.articleService = articleService;
+    }
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public void saveArticle(@Valid @RequestBody Article article) {
         articleService.saveArticle(article);
     }
+
     @RequestMapping(value = "/domain/{domain}", method = RequestMethod.GET)
     public List<ArticleDTO> filterArticlesByDomain(@PathVariable String domain) {
         return articleService.getArticlesByDomain(domain);
