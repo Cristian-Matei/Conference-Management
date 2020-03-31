@@ -9,5 +9,7 @@ import java.util.List;
 public interface TalkRepository extends JpaRepository<Talk, Integer> {
 
     List<Talk> findByAttendeesContaining(User attendee);
+
+    List<Talk> findByAttendeesNotContaining(User attendee);
 }
 

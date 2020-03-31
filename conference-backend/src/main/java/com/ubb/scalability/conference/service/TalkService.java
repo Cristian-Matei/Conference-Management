@@ -33,8 +33,10 @@ public class TalkService {
         return talkRepository.findByAttendeesContaining(user).stream().map(Talk::toTalkDTO).collect(Collectors.toList());
     }
 
-    public List<TalkDTO> getTalksFreePlaces() {
-        return talkRepository.findAll().stream().map(Talk::toTalkDTO).collect(Collectors.toList());
+    public List<TalkDTO> getTalksAvailable(Integer userId) {
+        User user = new User();
+        user.setId(userId);
+        return talkRepository.findByAttendeesNotContaining(user).stream().map(Talk::toTalkDTO).collect(Collectors.toList());
     }
 
     public void registerForTalk(Integer userId, Integer talkId) {
@@ -42,6 +44,15 @@ public class TalkService {
         Optional<Talk> talk = talkRepository.findById(talkId);
         user.ifPresent(u -> talk.ifPresent(t -> {
             t.addAttendee(u);
+            talkRepository.save(t);
+        }));
+    }
+
+    public void unregisterFromTalk(Integer userId, Integer talkId) {
+        Optional<User> user = userRepository.findById(userId);
+        Optional<Talk> talk = talkRepository.findById(talkId);
+        user.ifPresent(u -> talk.ifPresent(t -> {
+            t.removeAttendee(u);
             talkRepository.save(t);
         }));
     }

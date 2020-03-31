@@ -19,13 +19,18 @@ public class TalkController {
         return talkService.getTalksByUserId(userId);
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public List<TalkDTO> findTalks() {
-        return talkService.getTalksFreePlaces();
+    @RequestMapping(value = "/available", method = RequestMethod.GET)
+    public List<TalkDTO> findTalks(@RequestParam Integer userId ) {
+        return talkService.getTalksAvailable(userId);
     }
 
-    @RequestMapping(value = "/register/", method = RequestMethod.POST)
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
     public void registerForTalk(@RequestParam("userId") Integer userId, @RequestParam("talkId") Integer talkId) {
         talkService.registerForTalk(userId,talkId);
+    }
+
+    @RequestMapping(value = "/unregister", method = RequestMethod.POST)
+    public void unregisterFromTalk(@RequestParam("userId") Integer userId, @RequestParam("talkId") Integer talkId) {
+        talkService.unregisterFromTalk(userId,talkId);
     }
 }
