@@ -4,7 +4,6 @@ import './index.css';
 import App from './App';
 import Login from './components/Login';
 import Signup from './components/Signup';
-import Filter from './components/FilterArticles';
 import { Route, BrowserRouter as Router } from 'react-router-dom';
 import FilterArticles from './components/FilterArticles';
 import UploadArticles from './components/UploadArticles';

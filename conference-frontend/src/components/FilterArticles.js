@@ -4,85 +4,105 @@ import Select from 'react-select';
 import { withRouter } from 'react-router-dom';
 import DataTable from "react-data-table-component";
 import axios from 'axios';
- 
+
 const options = [
   { value: 'author', label: 'Author(First Name + Last Name)' },
   { value: 'domain', label: 'Domain' },
   { value: 'title', label: 'Title' }]
-const token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNTg1NTY0MDkxLCJleHAiOjE1ODY0MjgwOTF9.BpOcah-IirZu4dhu4NLt5ROfQj3NLo_WB6sM_4uzy5zeV5or6lkvbPvnri4xa_jqsLZ7vL5KIkgRu-U133zdvQ"
-
 
 class FilterArticles extends Component {
   constructor(props) {
     super(props);
+    console.log(this.props);
     this.state = {
-      data : [],
+      data: [],
       selectedOption: null,
       ok: false,
+      userId: this.props.location.state.userId,
+      email: this.props.location.state.email,
+      token: this.props.location.state.token,
+      roles: this.props.location.state.roles,
     }
 
   }
-  componentWillMount() {
-    axios.get('http://localhost:8080/conference/articles/',{
+  componentDidMount() {
+    axios.get('http://localhost:8080/conference/articles/', {
       headers: {
-        Authorization: `Bearer ${token}` 
+        Authorization: `Bearer ${this.state.token}`
       }
     })
       .then(res => {
-        console.log(res.data);
-        // const articles = res.data;
-        this.setState({data:res.data});
-        this.setState({ok:true});
-        console.log(this.state.data);
+        if (res.status === 200) {
+          this.setState({ data: res.data });
+          this.setState({ ok: true });
+        }
+      }
+      ).catch(eror => {
+        alert("Something went wrong! Try again!");
       })
-    console.log("Prima data intru aici");
+
   }
 
   handleFilter = () => {
-    if(this.state.selectedOption.label === "Domain" )
-    {
-      axios.get('http://localhost:8080/conference/articles/domain/'+this.refs.filter_input.value, 
-      {
-        headers: {
-          Authorization: `Bearer ${token}` 
-        }
-      })
+    if (this.state.selectedOption.label === "Domain") {
+      axios.get('http://localhost:8080/conference/articles/domain/' + this.refs.filter_input.value,
+        {
+          headers: {
+            Authorization: `Bearer ${this.state.token}`
+          }
+        })
         .then(res => {
-          console.log(res);
+   
           this.setState({ data: res.data });
-          this.state.ok = true;
+          this.setState({ok:true});
         })
     }
-    if(this.state.selectedOption.value === "author") {
-      var firstName = this.refs.filter_input.value.split(" ")[0];
-      console.log(firstName + firstName.length);
-      
-      var lastName = this.refs.filter_input.value.split(" ")[1];
-      console.log(lastName + lastName.length);
+    if (this.state.selectedOption.value === "author") {
+      var firstName = "";
+      firstName = this.refs.filter_input.value.split(" ")[0];
+
+      var lastName = "";
+      lastName = this.refs.filter_input.value.split(" ")[1];
+
       axios.get('http://localhost:8080/conference/articles/author',
-      {
-        params:{
-        "firstName" : firstName,
-        "lastName" : lastName
-        },
-        headers: {
-           Authorization: `Bearer ${token}` 
-        }
-      })
+        {
+          params: {
+            "firstName": firstName,
+            "lastName": lastName
+          },
+          headers: {
+            Authorization: `Bearer ${this.state.token}`
+          }
+        })
         .then(res => {
-          console.log(res);
-          this.setState({ data: res.data });
-          this.state.ok = true;
+        
+          if (res.status === 200) {
+            this.setState({ data: res.data });
+            this.setState({ok:true});
+          }
+
+        }).catch(error => {
+          alert("Something went wrong!");
         })
     }
   }
-
+  goBack = () => {
+    this.props.history.push({
+      pathname: '/menu',
+      state: {
+        email: this.state.email,
+        token: this.state.token,
+        roles: this.state.received_roles,
+        userId: this.state.userId
+      }
+    });
+  }
   render() {
 
     return (
-      
+
       <div className="centered">
-      
+
         <div style={{ height: '700px' }} className="demo-card-wide mdl-card mdl-shadow--5dp">
           <div className="mdl-card__title">
             <h2 className="mdl-card__title-text">Filter Articles</h2>
@@ -95,52 +115,58 @@ class FilterArticles extends Component {
                 this.setState({ selectedOption: value })
               }}
             />
-         
-          
-          <input style={{ width: '200px' }} className="mdl-text-field__input" type="text" id="filter_input" ref="filter_input" />
-          <button className="mdl-button mdl-js-button mdl-button--raised" onClick={this.handleFilter}>Filter</button>
+
+
+            <input style={{ width: '200px' }} className="mdl-text-field__input" type="text" id="filter_input" ref="filter_input" />
+            <button className="mdl-button mdl-js-button mdl-button--raised" onClick={this.handleFilter}>Filter</button>
           </div>
 
 
-          { this.state && this.state.data &&
+          {this.state && this.state.data &&
 
-          <DataTable
-          title="Articles"
-            data={this.state.data}
-            columns={[
-              {
-                name: "Tile",
-                selector: "title",
-                sortable: true,
-              },
-              {
-                name: "Domain",
-                selector: "domain",
-                sortable: true,
-              },
-              { 
-                name:"First Name",
-                selector: "author",
-                cell: d => d.author.firstName 
-              },
-              {
-                name:"Last Name",
-                selector: "author",
-                cell: d => d.author.lastName
-              }
-            ]}
-            fixedHeader
-            fixedHeaderScrollHeight="300px"
+            <DataTable
+              title="Articles"
+              data={this.state.data}
+              columns={[
+                {
+                  name: "Tile",
+                  selector: "title",
+                  sortable: true,
+                },
+                {
+                  name: "Domain",
+                  selector: "domain",
+                  sortable: true,
+                },
+                {
+                  name: "First Name",
+                  selector: "author",
+                  cell: d => d.author.firstName
+                },
+                {
+                  name: "Last Name",
+                  selector: "author",
+                  cell: d => d.author.lastName
+                }
+              ]}
+              fixedHeader
+              fixedHeaderScrollHeight="300px"
 
-          />
+            />
           }
+
+
+          <button className="mdl-button mdl-js-button mdl-button--raised" onClick={this.goBack}>Back</button>
+
         </div>
-      
+
+
+
       </div>
-          
-          
+
+
     );
-    }
+  }
 
 };
-export default FilterArticles;
+export default withRouter(FilterArticles);
