@@ -27,7 +27,7 @@ public class Talk {
         this.id = id;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     public Article getArticle() {
         return article;
     }

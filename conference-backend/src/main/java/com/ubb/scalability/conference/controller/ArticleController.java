@@ -2,6 +2,7 @@ package com.ubb.scalability.conference.controller;
 
 import com.ubb.scalability.conference.model.Article;
 import com.ubb.scalability.conference.model.ArticleDTO;
+import com.ubb.scalability.conference.model.ArticleDetailDTO;
 import com.ubb.scalability.conference.model.UserDTO;
 import com.ubb.scalability.conference.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,5 +50,10 @@ public class ArticleController {
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public List<ArticleDTO> getArticles() {
         return articleService.getArticles();
+    }
+
+    @RequestMapping(value = "/registered", method = RequestMethod.GET)
+    public List<ArticleDetailDTO> getArticlesRegistered() {
+        return articleService.getArticlesWithTalks();
     }
 }

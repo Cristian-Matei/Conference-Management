@@ -12,6 +12,7 @@ public class Article {
     private String domain;
     private String description;
     private String link;
+    private Talk talk;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -73,6 +74,15 @@ public class Article {
         this.link = link;
     }
 
+    @OneToOne(fetch = FetchType.EAGER)
+    public Talk getTalk() {
+        return talk;
+    }
+
+    public void setTalk(Talk talk) {
+        this.talk = talk;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -98,5 +108,15 @@ public class Article {
         articleDTO.setDomain(getDomain());
         articleDTO.setAuthor(getAuthor().toUserDTO());
         return articleDTO;
+    }
+
+    public ArticleDetailDTO toArticleDetailDTO() {
+        ArticleDetailDTO articleDetailDTO = new ArticleDetailDTO();
+        articleDetailDTO.setId(getId());
+        articleDetailDTO.setTitle(getTitle());
+        articleDetailDTO.setDomain(getDomain());
+        articleDetailDTO.setDescription(getDescription());
+        articleDetailDTO.setAuthor(getAuthor().toUserDTO());
+        return articleDetailDTO;
     }
 }

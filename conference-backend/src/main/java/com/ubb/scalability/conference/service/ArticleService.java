@@ -1,9 +1,6 @@
 package com.ubb.scalability.conference.service;
 
-import com.ubb.scalability.conference.model.ArticleDTO;
-import com.ubb.scalability.conference.model.User;
-import com.ubb.scalability.conference.model.UserDTO;
-import com.ubb.scalability.conference.model.Article;
+import com.ubb.scalability.conference.model.*;
 import com.ubb.scalability.conference.repository.ArticleRepository;
 import com.ubb.scalability.conference.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +42,12 @@ public class ArticleService {
     public List<ArticleDTO> getArticlesByDomainAndAuthor(String domain, UserDTO author) {
         User user = userRepository.findUserByFirstNameAndLastName(author.getFirstName(), author.getLastName());
         return articleRepository.findArticlesByDomainAndAuthor(domain, user).stream().map(Article::toArticleDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<ArticleDetailDTO> getArticlesWithTalks() {
+        List<Article> articles = articleRepository.findArticlesByTalkIsNotNull();
+        return articles.stream().map(Article::toArticleDetailDTO)
                 .collect(Collectors.toList());
     }
 
