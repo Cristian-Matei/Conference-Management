@@ -1,6 +1,7 @@
 package com.ubb.scalability.conference.controller;
 
 import com.ubb.scalability.conference.model.TalkDTO;
+import com.ubb.scalability.conference.model.TalkParticipantsDTO;
 import com.ubb.scalability.conference.payload.RegistrationRequest;
 import com.ubb.scalability.conference.service.TalkService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +13,12 @@ import java.util.List;
 @RequestMapping(value = "conference/talks")
 public class TalkController {
 
+    private final TalkService talkService;
+
     @Autowired
-    private TalkService talkService;
+    public TalkController(TalkService talkService) {
+        this.talkService = talkService;
+    }
 
     @RequestMapping(value = "/attendee/{userId}", method = RequestMethod.GET)
     public List<TalkDTO> findTalksForUser(@PathVariable Integer userId) {
@@ -33,5 +38,10 @@ public class TalkController {
     @RequestMapping(value = "/unregister", method = RequestMethod.POST)
     public void unregisterFromTalk(@RequestBody RegistrationRequest registrationRequest) {
         talkService.unregisterFromTalk(registrationRequest.getUserId(),registrationRequest.getTalkId());
+    }
+
+    @RequestMapping(value = "/statistics", method = RequestMethod.GET)
+    public List<TalkParticipantsDTO> getTalks() {
+        return talkService.getTalksStatistics();
     }
 }
