@@ -17,13 +17,6 @@ class Chat extends Component {
         };
     }
 
-    // chatPage = document.querySelector('#chat-page');
-    // usernameForm = document.querySelector('#usernameForm');
-    // messageForm = document.querySelector('#messageForm');
-    // messageInput = document.querySelector('#message');
-    // messageArea = document.querySelector('#messageArea');
-    // connectingElement = document.querySelector('.connecting');
-
     startChat = () => {
         document.getElementById("username-page").classList.add("hidden");
         this.clientRef.sendMessage(this.state.topic, JSON.stringify({ sender: this.state.email, type: "JOIN" }));
@@ -41,7 +34,7 @@ class Chat extends Component {
     }
 
     receivedMessage = (payload) => {
-        var messageArea = document.querySelector('#messageArea');
+        // var messageArea = document.querySelector('#messageArea');
         var message = payload;
         var messageElement = document.createElement('li');
 
