@@ -4,19 +4,22 @@ import './index.css';
 import App from './App';
 import Login from './components/Login';
 import Signup from './components/Signup';
-
 import { Route, BrowserRouter as Router } from 'react-router-dom';
-
+import FilterArticles from './components/FilterArticles';
 import UploadArticles from './components/UploadArticles';
+import Menu from './components/Menu';
+import RegisterForTalks from './components/RegisterForATalk';
 import RegisterForATalk from './components/RegisterForATalk';
+
 const routing = (
     <Router>
         <div>
             <Route exact path="/" component = {Homepage} />
             <Route path="/signup" component = {SignupPage} />
-         
+            <Route path="/filter" component = {FilterArticlesPage} />
             <Route path="/upload" component = {UploadArticlePage} />
-            <Route path="/talk" component = {RegisterForATalkPage} />
+            <Route path="/menu" component = {MenuPage} />
+            <Route path="/talk" component = {RegisterForTalksPage} />
         </div>
     </Router>
 );
@@ -37,13 +40,13 @@ function SignupPage(){
     )
 }
 
-
-
-
-
-
-
-
+function FilterArticlesPage(){
+    return(
+        <App>
+            <FilterArticles />
+        </App>
+    )
+}
 
 function UploadArticlePage() {
     return(
@@ -53,7 +56,15 @@ function UploadArticlePage() {
     )
 }
 
-function RegisterForATalkPage(){
+function MenuPage(){
+    return(
+        <App>
+            <Menu />
+        </App>
+    )
+}
+
+function RegisterForTalksPage(){
     return(
         <App>
             <RegisterForATalk />
@@ -62,7 +73,3 @@ function RegisterForATalkPage(){
 }
 
 ReactDOM.render(routing, document.getElementById('root'));
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
