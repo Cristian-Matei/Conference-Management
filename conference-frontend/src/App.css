@@ -42,3 +42,28 @@
   left: 100px;
   /* padding-bottom: 10px; */
 }
+
+.button {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 1px 1px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 11px;
+  margin: 2px 2px;
+  cursor: pointer;
+}
+.button2 {
+  background-color: red;
+  border: none;
+  color: white;
+  padding: 1px 1px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 11px;
+  margin: 2px 2px;
+  cursor: pointer;
+}

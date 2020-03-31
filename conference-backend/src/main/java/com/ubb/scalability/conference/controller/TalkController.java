@@ -26,7 +26,7 @@ public class TalkController {
     }
 
     @RequestMapping(value = "/available", method = RequestMethod.GET)
-    public List<TalkDTO> findTalks(@RequestParam Integer userId ) {
+    public List<TalkDTO> findTalks(@RequestParam("userId") Integer userId ) {
         return talkService.getTalksAvailable(userId);
     }
 
