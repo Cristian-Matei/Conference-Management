@@ -3,6 +3,7 @@ package com.ubb.scalability.conference.controller;
 import com.ubb.scalability.conference.model.User;
 import com.ubb.scalability.conference.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,10 +12,14 @@ import java.util.List;
 @RequestMapping(value="conference/users")
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @RequestMapping(value = "/", method = RequestMethod.POST)
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @RequestMapping(method = RequestMethod.POST)
     public void saveUsers(@RequestBody User user) {
         userService.saveUser(user);
     }
@@ -24,12 +29,13 @@ public class UserController {
         return userService.getUser(id);
     }
 
+    @PreAuthorize("hasAuthority('organizer')")
     @RequestMapping(value="/{id}", method = RequestMethod.DELETE)
     public void deleteUsers(@PathVariable("id") int id) {
         userService.deleteUser(id);
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public List<User> getUsers() {
         return userService.getAllUsers();
     }

@@ -4,10 +4,12 @@ import './index.css';
 import App from './App';
 import Login from './components/Login';
 import Signup from './components/Signup';
-import FilterArticles from './components/FilterArticles';
-import Menu from './components/Menu';
-import Upload from './components/Upload';
+import Chat from './components/Chat';
+import Filter from './components/FilterArticles';
 import { Route, BrowserRouter as Router } from 'react-router-dom';
+import FilterArticles from './components/FilterArticles';
+import UploadArticles from './components/UploadArticles';
+import Menu from './components/Menu';
 
 
 const routing = (
@@ -15,9 +17,10 @@ const routing = (
         <div>
             <Route exact path="/" component = {Homepage} />
             <Route path="/signup" component = {SignupPage} />
-            <Route path="/menu" component = {MenuPage} />
+            <Route path="/chat" component = {Chat} />
             <Route path="/filter" component = {FilterArticlesPage} />
-            <Route path="/upload" component = {UploadPage} />
+            <Route path="/upload" component = {UploadArticlePage} />
+            <Route path="/menu" component = {Menu} />
         </div>
     </Router>
 );
@@ -38,28 +41,28 @@ function SignupPage(){
     );
 }
 
-function MenuPage(){
-    return(
-        <App>
-            <Menu />
-        </App>
-    );
-}
-
 function FilterArticlesPage(){
     return(
         <App>
             <FilterArticles />
         </App>
-    );
+    )
 }
 
-function UploadPage(){
+function UploadArticlePage() {
     return(
         <App>
-            <Upload />
+            <UploadArticles />
         </App>
-    );
+    )
+}
+
+function MenuPage(){
+    return(
+        <App>
+            <Menu />
+        </App>
+    )
 }
 
 ReactDOM.render(routing, document.getElementById('root'));

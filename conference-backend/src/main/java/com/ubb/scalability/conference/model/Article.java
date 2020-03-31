@@ -1,28 +1,26 @@
 package com.ubb.scalability.conference.model;
 
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.Objects;
 
 @Entity
 @Table(name = "articles", schema = "conference")
 public class Article {
-    private int id;
+    private Integer id;
     private String title;
-    private Integer author;
+    private User author;
     private String domain;
     private String description;
     private String link;
-    private User usersByAuthor;
-    private Collection<Talk> talksById;
 
     @Id
     @Column(name = "id", nullable = false)
-    public int getId() {
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -36,13 +34,12 @@ public class Article {
         this.title = title;
     }
 
-    @Basic
-    @Column(name = "author", nullable = true)
-    public Integer getAuthor() {
+    @ManyToOne(fetch = FetchType.LAZY)
+    public User getAuthor() {
         return author;
     }
 
-    public void setAuthor(Integer author) {
+    public void setAuthor(User author) {
         this.author = author;
     }
 
@@ -57,7 +54,7 @@ public class Article {
     }
 
     @Basic
-    @Column(name = "description", nullable = true, length = -1)
+    @Column(name = "description", nullable = true, length = 500)
     public String getDescription() {
         return description;
     }
@@ -81,7 +78,7 @@ public class Article {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Article article = (Article) o;
-        return id == article.id &&
+        return Objects.equals(id, article.id) &&
                 Objects.equals(title, article.title) &&
                 Objects.equals(author, article.author) &&
                 Objects.equals(domain, article.domain) &&
@@ -94,22 +91,12 @@ public class Article {
         return Objects.hash(id, title, author, domain, description, link);
     }
 
-    @ManyToOne
-    @JoinColumn(name = "author", referencedColumnName = "id", insertable=false, updatable=false)
-    public User getUsersByAuthor() {
-        return usersByAuthor;
-    }
-
-    public void setUsersByAuthor(User usersByAuthor) {
-        this.usersByAuthor = usersByAuthor;
-    }
-
-    @OneToMany(mappedBy = "articlesByArticle")
-    public Collection<Talk> getTalksById() {
-        return talksById;
-    }
-
-    public void setTalksById(Collection<Talk> talksById) {
-        this.talksById = talksById;
+    public ArticleDTO toArticleDTO(){
+        ArticleDTO articleDTO = new ArticleDTO();
+        articleDTO.setId(getId());
+        articleDTO.setTitle(getTitle());
+        articleDTO.setDomain(getDomain());
+        articleDTO.setAuthor(getAuthor().toUserDTO());
+        return articleDTO;
     }
 }

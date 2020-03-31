@@ -2,6 +2,7 @@ package com.ubb.scalability.conference.model;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
 
@@ -9,16 +10,15 @@ import java.util.Objects;
 @Table(name = "talks", schema = "conference")
 public class Talk {
     private int id;
-    private Integer article;
+    private Article article;
     private Timestamp startTime;
     private Timestamp endTime;
-    private Integer room;
-    private Collection<TalkParticipant> talkParticipantsById;
-    private Article articlesByArticle;
-    private Room roomsByRoom;
+    private Room room;
+    private Collection<User> attendees;
 
     @Id
     @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy=GenerationType.AUTO)
     public int getId() {
         return id;
     }
@@ -27,13 +27,12 @@ public class Talk {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "article", nullable = true)
-    public Integer getArticle() {
+    @ManyToOne(fetch = FetchType.LAZY)
+    public Article getArticle() {
         return article;
     }
 
-    public void setArticle(Integer article) {
+    public void setArticle(Article article) {
         this.article = article;
     }
 
@@ -57,13 +56,12 @@ public class Talk {
         this.endTime = endTime;
     }
 
-    @Basic
-    @Column(name = "room", nullable = true)
-    public Integer getRoom() {
+    @ManyToOne(fetch = FetchType.LAZY)
+    public Room getRoom() {
         return room;
     }
 
-    public void setRoom(Integer room) {
+    public void setRoom(Room room) {
         this.room = room;
     }
 
@@ -84,32 +82,39 @@ public class Talk {
         return Objects.hash(id, article, startTime, endTime, room);
     }
 
-    @OneToMany(mappedBy = "talksByTalkId")
-    public Collection<TalkParticipant> getTalkParticipantsById() {
-        return talkParticipantsById;
+    @ManyToMany(cascade = { CascadeType.ALL })
+    @JoinTable(
+            name = "talks_participants",
+            joinColumns = { @JoinColumn(name = "talk_id") },
+            inverseJoinColumns = { @JoinColumn(name = "participant_id") }
+    )
+    public Collection<User> getAttendees() {
+        return attendees;
     }
 
-    public void setTalkParticipantsById(Collection<TalkParticipant> talkParticipantsById) {
-        this.talkParticipantsById = talkParticipantsById;
+    public void setAttendees(Collection<User> attendees) {
+        this.attendees = attendees;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "article", referencedColumnName = "id", insertable=false, updatable=false)
-    public Article getArticlesByArticle() {
-        return articlesByArticle;
+    public void addAttendee(User attendee) {
+        if(attendees == null) {
+            attendees = new ArrayList();
+        }
+        attendees.add(attendee);
     }
 
-    public void setArticlesByArticle(Article articlesByArticle) {
-        this.articlesByArticle = articlesByArticle;
+    public void removeAttendee(User attendee) {
+        attendees.remove(attendee);
     }
 
-    @ManyToOne
-    @JoinColumn(name = "room", referencedColumnName = "id", insertable=false, updatable=false)
-    public Room getRoomsByRoom() {
-        return roomsByRoom;
-    }
+    public TalkDTO toTalkDTO() {
+        TalkDTO talkDTO = new TalkDTO();
 
-    public void setRoomsByRoom(Room roomsByRoom) {
-        this.roomsByRoom = roomsByRoom;
+        talkDTO.setId(getId());
+        talkDTO.setTitle(getArticle().getTitle());
+        talkDTO.setDomain(getArticle().getDomain());
+        talkDTO.setAuthor(getArticle().getAuthor().toUserDTO());
+
+        return talkDTO;
     }
 }
