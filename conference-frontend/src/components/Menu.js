@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-// import axios from 'axios';
 import Toolbar from './Toolbar';
+
 
 class Menu extends Component {
     constructor(props) {
