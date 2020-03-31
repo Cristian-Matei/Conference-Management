@@ -73,75 +73,82 @@ class RegisterForATalk extends Component {
     }
 
     unregister = (value) => {
-        console.log(value);
-        axios.all([
-            axios.post('http://localhost:8080/conference/talks/unregister',
-                
-                     {
-                        "userId": this.state.userId,
-                        "talkId": value.id
-                    },
-                    {headers: {
-                        Authorization: `Bearer ${this.state.token}`
-                    }}
-            ),
+
+        axios.post('http://localhost:8080/conference/talks/unregister',
+
+            {
+                "userId": this.state.userId,
+                "talkId": value.id
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${this.state.token}`
+                }
+            }
+        ).then(response => {
+
             axios.get('http://localhost:8080/conference/talks/attendee/' + this.state.userId, {
                 headers: {
                     Authorization: `Bearer ${this.state.token}`
                 }
-            }),
-            axios.get('http://localhost:8080/conference/talks/available', {
-                params: {
-                    "userId": this.state.userId
-                },
-                headers: {
-                    Authorization: `Bearer ${this.state.token}`
-                }
-            })])
-            .then(axios.spread((resp2, talksResponse, availableResponse) => {
+            }).then(talksResponse => {
 
                 this.setState({ registeredTalks: talksResponse.data });
-                this.setState({ availableTaks: availableResponse.data });
-                this.setState({ ok: true });
-
-            }))
-    }
-    register = (value) => {
-
-        axios.post('http://localhost:8080/conference/talks/register',
-            
-                {
-                    "userId": this.state.userId,
-                    "talkId": value.id
-                },
-                {headers: {
-                    Authorization: `Bearer ${this.state.token}`
-                }}
-            ).then(response => {
-                    console.log("Post a mers");
-                axios.get('http://localhost:8080/conference/talks/attendee/' + this.state.userId, {
+                axios.get('http://localhost:8080/conference/talks/available', {
+                    params: {
+                        "userId": this.state.userId
+                    },
                     headers: {
                         Authorization: `Bearer ${this.state.token}`
                     }
-                }).then(talksResponse => {
-                    console.log("primul get a mers");
-                    this.setState({ registeredTalks: talksResponse.data });
-                    axios.get('http://localhost:8080/conference/talks/available', {
-                        params: {
-                            "userId": this.state.userId
-                        },
-                        headers: {
-                            Authorization: `Bearer ${this.state.token}`
-                        }
-                    }).then(availableResponse => {
-                        console.log("Ultimul get");
-                        this.setState({ availableTaks: availableResponse.data });
-                        this.setState({ ok: true });
-                    })
+                }).then(availableResponse => {
+
+                    this.setState({ availableTaks: availableResponse.data });
+                    this.setState({ ok: true });
 
                 })
 
             })
+
+
+        })
+
+    }
+    register = (value) => {
+
+        axios.post('http://localhost:8080/conference/talks/register',
+
+            {
+                "userId": this.state.userId,
+                "talkId": value.id
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${this.state.token}`
+                }
+            }
+        ).then(response => {
+            axios.get('http://localhost:8080/conference/talks/attendee/' + this.state.userId, {
+                headers: {
+                    Authorization: `Bearer ${this.state.token}`
+                }
+            }).then(talksResponse => {
+                this.setState({ registeredTalks: talksResponse.data });
+                axios.get('http://localhost:8080/conference/talks/available', {
+                    params: {
+                        "userId": this.state.userId
+                    },
+                    headers: {
+                        Authorization: `Bearer ${this.state.token}`
+                    }
+                }).then(availableResponse => {
+                    this.setState({ availableTaks: availableResponse.data });
+                    this.setState({ ok: true });
+                })
+
+            })
+
+        })
 
     }
     render() {

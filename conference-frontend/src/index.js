@@ -11,7 +11,7 @@ import FilterArticles from './components/FilterArticles';
 import UploadArticles from './components/UploadArticles';
 import Menu from './components/Menu';
 import RegisterForATalk from './components/RegisterForATalk';
-import ManageRooms from './components/ManageRooms';
+
 
 const routing = (
     <Router>
@@ -24,7 +24,7 @@ const routing = (
             
             <Route path="/talk" component = {RegisterForTalksPage} />
             <Route path="/menu" component = {Menu} />
-            <Route path="/manage" component = {ManageRoomsPage} />
+            
         </div>
     </Router>
 );
@@ -77,12 +77,6 @@ function RegisterForTalksPage(){
     )
 }
 
-function ManageRoomsPage(){
-    return(
-        <App>
-            <ManageRooms />
-        </App>
-    )
-}
+
 
 ReactDOM.render(routing, document.getElementById('root'));
