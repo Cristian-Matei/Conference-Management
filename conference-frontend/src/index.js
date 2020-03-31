@@ -4,6 +4,8 @@ import './index.css';
 import App from './App';
 import Login from './components/Login';
 import Signup from './components/Signup';
+import Chat from './components/Chat';
+
 import { Route, BrowserRouter as Router } from 'react-router-dom';
 import FilterArticles from './components/FilterArticles';
 import UploadArticles from './components/UploadArticles';
@@ -15,10 +17,12 @@ const routing = (
         <div>
             <Route exact path="/" component = {Homepage} />
             <Route path="/signup" component = {SignupPage} />
+            <Route path="/chat" component = {Chat} />
             <Route path="/filter" component = {FilterArticlesPage} />
             <Route path="/upload" component = {UploadArticlePage} />
-            <Route path="/menu" component = {MenuPage} />
+            
             <Route path="/talk" component = {RegisterForTalksPage} />
+            <Route path="/menu" component = {Menu} />
         </div>
     </Router>
 );

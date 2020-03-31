@@ -17,11 +17,15 @@ import java.util.stream.Collectors;
 @Transactional
 public class TalkService {
 
-    @Autowired
-    private TalkRepository talkRepository;
+    private final TalkRepository talkRepository;
+
+    private final UserRepository userRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    public TalkService(TalkRepository talkRepository, UserRepository userRepository) {
+        this.talkRepository = talkRepository;
+        this.userRepository = userRepository;
+    }
 
     public List<TalkDTO> getTalksByUserId(Integer userId) {
         User user = new User();
@@ -29,14 +33,27 @@ public class TalkService {
         return talkRepository.findByAttendeesContaining(user).stream().map(Talk::toTalkDTO).collect(Collectors.toList());
     }
 
-    public List<TalkDTO> getTalksFreePlaces() {
-        return talkRepository.findAll().stream().map(Talk::toTalkDTO).collect(Collectors.toList());
+    public List<TalkDTO> getTalksAvailable(Integer userId) {
+        User user = new User();
+        user.setId(userId);
+        return talkRepository.findByAttendeesNotContaining(user).stream().map(Talk::toTalkDTO).collect(Collectors.toList());
     }
 
     public void registerForTalk(Integer userId, Integer talkId) {
         Optional<User> user = userRepository.findById(userId);
         Optional<Talk> talk = talkRepository.findById(talkId);
-        talk.get().addAttendee(user.get());
-        talkRepository.save(talk.get());
+        user.ifPresent(u -> talk.ifPresent(t -> {
+            t.addAttendee(u);
+            talkRepository.save(t);
+        }));
+    }
+
+    public void unregisterFromTalk(Integer userId, Integer talkId) {
+        Optional<User> user = userRepository.findById(userId);
+        Optional<Talk> talk = talkRepository.findById(talkId);
+        user.ifPresent(u -> talk.ifPresent(t -> {
+            t.removeAttendee(u);
+            talkRepository.save(t);
+        }));
     }
 }
