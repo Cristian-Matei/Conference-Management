@@ -1,5 +1,9 @@
 package com.ubb.scalability.conference.service;
 
+import com.ubb.scalability.conference.model.Talk;
+import com.ubb.scalability.conference.model.TalkDTO;
+import com.ubb.scalability.conference.model.TalkParticipantsDTO;
+import com.ubb.scalability.conference.model.User;
 import com.ubb.scalability.conference.model.*;
 import com.ubb.scalability.conference.repository.ArticleRepository;
 import com.ubb.scalability.conference.repository.RoomRepository;
@@ -86,5 +90,14 @@ public class TalkService {
             );
             return r.toRoomDTO();
         }).orElseThrow(() -> new NoSuchElementException("No room found!"));
+    }
+
+    public List<TalkParticipantsDTO> getTalksStatistics() {
+        return talkRepository.findAll().stream().map(t -> {
+            String title = t.getArticle().getTitle();
+            int numberOfParticipants = t.getAttendees().size();
+            int places = t.getRoom().getPlaces();
+            return new TalkParticipantsDTO(title, numberOfParticipants, places);
+        }).collect(Collectors.toList());
     }
 }
