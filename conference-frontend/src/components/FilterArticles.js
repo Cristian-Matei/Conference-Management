@@ -86,17 +86,7 @@ class FilterArticles extends Component {
         })
     }
   }
-  goBack = () => {
-    this.props.history.push({
-      pathname: '/menu',
-      state: {
-        email: this.state.email,
-        token: this.state.token,
-        roles: this.state.received_roles,
-        userId: this.state.userId
-      }
-    });
-  }
+  
   render() {
 
     return (
@@ -156,8 +146,7 @@ class FilterArticles extends Component {
           }
 
 
-          <button className="mdl-button mdl-js-button mdl-button--raised" onClick={this.goBack}>Back</button>
-
+         
         </div>
 
 

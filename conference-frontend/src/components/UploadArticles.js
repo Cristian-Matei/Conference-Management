@@ -78,9 +78,7 @@ class Upload extends Component {
                         <div class="mdl-textfield mdl-js-textfield">
                             <button className="mdl-button mdl-js-button mdl-button--raised" onClick={this.uploadArticle}>Submit</button>
                         </div>
-                        <div class="mdl-textfield mdl-js-textfield">
-                            <button className="mdl-button mdl-js-button mdl-button--raised" onClick={this.goBack}>Back</button>
-                        </div>
+                       
                     </div>
                 </div>
             </div>

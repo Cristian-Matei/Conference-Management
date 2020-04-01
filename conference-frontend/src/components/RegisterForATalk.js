@@ -151,6 +151,7 @@ class RegisterForATalk extends Component {
         })
 
     }
+
     render() {
 
         return (
@@ -241,7 +242,7 @@ class RegisterForATalk extends Component {
 
                         />
                     }
-                </div>
+                                   </div>
 
             </div>
 

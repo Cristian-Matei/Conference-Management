@@ -10,24 +10,23 @@ const customStyles = {
         style: {
             position: 'relative',
             fontSize: '14px',
-            minHeight: '72px', // override the row height
+            minHeight: '32px', // override the row height
         }
     },
     headCells: {
         style: {
             position: 'relative',
-            fontSize: '14px',
-            paddingLeft: '8px', // override the cell padding for head cells
-            paddingRight: '8px',
+            fontSize: '12px',
+            paddingLeft: '2px', // override the cell padding for head cells
+            paddingRight: '2px',
         },
     },
     cells: {
         style: {
             position: 'relative',
-            zIndex: '0',
-            fontSize: '14px',
-            paddingLeft: '8px', // override the cell padding for data cells
-            paddingRight: '8px',
+            fontSize: '12px',
+            paddingLeft: '2px', // override the cell padding for data cells
+            paddingRight: '2px',
         },
     },
 };
@@ -58,7 +57,7 @@ class ManageTalks extends Component {
                     Authorization: `Bearer ${this.state.token}`
                 }
             }),
-            axios.get('http://localhost:8080/conference/articles/registered/', {
+            axios.get('http://localhost:8080/conference/articles/unregistered/', {
                 headers: {
                     Authorization: `Bearer ${this.state.token}`
                 }
@@ -80,12 +79,12 @@ class ManageTalks extends Component {
     close = () => {
         this.setState({ showModal: false });
         var d = new Date(this.refs.date.value + " " + this.refs.startTime.value);
-        var dd = new Date(this.refs.date .value+ " " + this.refs.endTime.value);
+        var dd = new Date(this.refs.date.value + " " + this.refs.endTime.value);
 
         axios.post("http://localhost:8080/conference/talks/", {
-            "startTime":Math.round(d.getTime()/1000),
-            "endTime": Math.round(dd.getTime()/1000),
-            "articleId": 4,
+            "startTime": d.getTime(),
+            "endTime":dd.getTime(),
+            "articleId": this.state.articleId,
         }, {
             headers: {
                 Authorization: `Bearer ${this.state.token}`
@@ -99,12 +98,12 @@ class ManageTalks extends Component {
                 }
             }).then(response => {
                 this.setState({ talks: response.data });
-                axios.get('http://localhost:8080/conference/articles/registered/', {
+                axios.get('http://localhost:8080/conference/articles/unregistered/', {
                     headers: {
                         Authorization: `Bearer ${this.state.token}`
                     }
                 }).then(resp => {
-                    
+
                     this.setState({ articles: resp.data });
                 })
 
@@ -114,16 +113,12 @@ class ManageTalks extends Component {
             alert("something went wrong! Please try again");
         })
     }
+   
     render() {
 
         return (
 
             <div className="centered" >
-
-
-
-
-
                 <div style={{ height: '700px' }} className="demo-card-wide mdl-card mdl-shadow--5dp">
                     <div className="mdl-card__title">
                         <h2 className="mdl-card__title-text">Manage Talks</h2>
@@ -131,11 +126,11 @@ class ManageTalks extends Component {
 
 
                     <div>
-                    {this.state && this.state.articles &&
-
+                    {
+                        this.state && this.state.talks &&
                         <DataTable
-                            title="Available Articles"
-                            data={this.state.articles}
+                            title="Talks"
+                            data={this.state.talks}
                             columns={[
                                 {
                                     name: "Title",
@@ -143,42 +138,79 @@ class ManageTalks extends Component {
                                     sortable: true,
                                 },
                                 {
-                                    name: "Domain",
-                                    selector: "domain",
+                                    name: "Room Name",
+                                    selector: "room",
+                                    sortable: true,
+                                    cell: cellInfo => cellInfo.room.name
+                                },
+                                {
+                                    name: "Capacity",
+                                    selector: "room",
+                                    sortable: true,
+                                    cell: cellInfo => cellInfo.room.places
+                                },
+                                {
+                                    name: "Start Time",
+                                    selector: "startTime",
                                     sortable: true,
                                 },
                                 {
-                                    name: "Description",
-                                    selector: "description",
-                                    sortable: true,
+                                    name: "End Time",
+                                    selector: "endTime",
+                                    sortable: true
                                 },
-                                {
-                                    name: "Author",
-                                    selector: "author",
-                                    sortable: true,
-                                    cell: cellInfo => cellInfo.author.firstName + " " + cellInfo.author.lastName
-                                },
-                                {
-                                    name: "Add talk",
-                                    cell: cellInfo => (
-
-                                        <button className="button" onClick={(e) => this.add(cellInfo)}>add</button>
-                                    )
-                                }
 
                             ]}
                             fixedHeader
                             fixedHeaderScrollHeight="300px"
                             customStyles={customStyles}
 
-                        />
-                    }
+                        />}
+                        {this.state && this.state.articles &&
+
+                            <DataTable
+                                title="Available Articles"
+                                data={this.state.articles}
+                                columns={[
+                                    {
+                                        name: "Title",
+                                        selector: "title",
+                                        sortable: true,
+                                    },
+                                    {
+                                        name: "Domain",
+                                        selector: "domain",
+                                        sortable: true,
+                                    },
+                                    {
+                                        name: "Description",
+                                        selector: "description",
+                                        sortable: true,
+                                    },
+                                    {
+                                        name: "Author",
+                                        selector: "author",
+                                        sortable: true,
+                                        cell: cellInfo => cellInfo.author.firstName + " " + cellInfo.author.lastName
+                                    },
+                                    {
+                                        name: "Add talk",
+                                        cell: cellInfo => (
+
+                                            <button className="button" onClick={(e) => this.add(cellInfo)}>add</button>
+                                        )
+                                    }
+
+                                ]}
+                                fixedHeader
+                                fixedHeaderScrollHeight="300px"
+                                customStyles={customStyles}
+
+                            />
+                        }
                     </div>
 
                     {this.state.clicked &&
-                        <div className="modal">
-
-
                             <Modal
                                 isOpen={this.state.showModal}
                                 ariaHideApp={false}
@@ -206,11 +238,12 @@ class ManageTalks extends Component {
                                         outline: 'none',
                                         padding: '20px'
                                     }
-                                }}
-                            >
+                                }
+                             }
+                              >
                                 <h4> Please introduce date and time for the talk</h4>
                                 <div>
-                                    <label htmlFor="date">Date:dd-mm-yyyy</label>
+                                    <label htmlFor="date">Date:mm-dd-yyyy</label>
                                     <input type="text" id="date" ref="date" />
                                 </div>
                                 <div>
@@ -225,53 +258,13 @@ class ManageTalks extends Component {
                                     <button onClick={this.close}>Send</button>
                                 </div>
                             </Modal>
+                       }
 
-                        </div>}
-
-                        <div>
-                    <DataTable
-                        title="Talks"
-                        data={this.state.talks}
-                        columns={[
-                            {
-                                name: "Title",
-                                selector: "title",
-                                sortable: true,
-                            },
-                            {
-                                name: "Room Name",
-                                selector: "room",
-                                sortable: true,
-                                cell: cellInfo => cellInfo.room.name
-                            },
-                            {
-                                name: "Capacity",
-                                selector: "room",
-                                sortable: true,
-                                cell: cellInfo => cellInfo.room.places
-                            },
-                            {
-                                name: "Start Time",
-                                selector: "startTime",
-                                sortable: true,
-                            },
-                            {
-                                name: "End Time",
-                                selector: "endTime",
-                                sortable: true
-                            },
-
-                        ]}
-                        fixedHeader
-                        fixedHeaderScrollHeight="300px"
-                        customStyles={customStyles}
-
-                    />
-                    </div>
+                   
+                  
                 </div>
 
-
-
+            
             </div>
 
 
