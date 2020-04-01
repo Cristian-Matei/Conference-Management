@@ -1,6 +1,9 @@
 package com.ubb.scalability.conference.controller;
 
+import com.ubb.scalability.conference.model.NewTalkDTO;
+import com.ubb.scalability.conference.model.RoomDTO;
 import com.ubb.scalability.conference.model.TalkDTO;
+import com.ubb.scalability.conference.model.TalkDetailDTO;
 import com.ubb.scalability.conference.model.TalkParticipantsDTO;
 import com.ubb.scalability.conference.payload.RegistrationRequest;
 import com.ubb.scalability.conference.service.TalkService;
@@ -30,6 +33,10 @@ public class TalkController {
         return talkService.getTalksAvailable(userId);
     }
 
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public List<TalkDetailDTO> findAllTalks(){
+        return talkService.getAllTalks();
+    }
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public void registerForTalk(@RequestBody RegistrationRequest registrationRequest) {
         talkService.registerForTalk(registrationRequest.getUserId(),registrationRequest.getTalkId());
@@ -43,5 +50,10 @@ public class TalkController {
     @RequestMapping(value = "/statistics", method = RequestMethod.GET)
     public List<TalkParticipantsDTO> getTalks() {
         return talkService.getTalksStatistics();
+    }
+
+    @RequestMapping(value = "/", method = RequestMethod.POST)
+    public RoomDTO createTalk(@RequestBody NewTalkDTO newTalkDTO) {
+        return talkService.createTalk(newTalkDTO);
     }
 }
