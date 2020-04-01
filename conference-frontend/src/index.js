@@ -78,6 +78,14 @@ function RegisterForTalksPage(){
     )
 }
 
+function ManageRoomsPage(){
+    return(
+        <App>
+            <ManageRooms />
+        </App>
+    )
+}
+
 
 
 ReactDOM.render(routing, document.getElementById('root'));

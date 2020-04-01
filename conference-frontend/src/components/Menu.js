@@ -103,7 +103,7 @@ class Menu extends Component {
                         </div>
                         {this.state.organizer &&
                         <div class="mdl-textfield mdl-js-textfield">
-                            <button style={{ width: '200px' }} className="mdl-button mdl-js-button mdl-button--raised" onClick={(e) => { this.redirect(4) }}>Manage rooms</button>
+                            <button style={{ width: '200px' }} className="mdl-button mdl-js-button mdl-button--raised" onClick={(e) => { this.redirect(4) }}>Manage talks</button>
                         </div>
                         }
                     </div>
