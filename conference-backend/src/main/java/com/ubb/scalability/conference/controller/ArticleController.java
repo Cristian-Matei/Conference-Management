@@ -52,8 +52,8 @@ public class ArticleController {
         return articleService.getArticles();
     }
 
-    @RequestMapping(value = "/registered", method = RequestMethod.GET)
-    public List<ArticleDetailDTO> getArticlesRegistered() {
-        return articleService.getArticlesWithTalks();
+    @RequestMapping(value = "/unregistered", method = RequestMethod.GET)
+    public List<ArticleDetailDTO> getArticlesNotRegistered() {
+        return articleService.getArticlesWithNoTalks();
     }
 }
