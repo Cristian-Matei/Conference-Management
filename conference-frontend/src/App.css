@@ -67,3 +67,7 @@
   margin: 2px 2px;
   cursor: pointer;
 }
+.modal {
+ z-index: 1000;
+ position: fixed;
+}

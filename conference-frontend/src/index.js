@@ -11,7 +11,7 @@ import FilterArticles from './components/FilterArticles';
 import UploadArticles from './components/UploadArticles';
 import Menu from './components/Menu';
 import RegisterForATalk from './components/RegisterForATalk';
-import ManageRooms from './components/ManageRooms';
+import ManageTalks from './components/ManageTalks';
 
 
 const routing = (
@@ -25,7 +25,7 @@ const routing = (
             
             <Route path="/talk" component = {RegisterForTalksPage} />
             <Route path="/menu" component = {Menu} />
-            <Router path ="/manage" component = {ManageRoomsPage} />            
+            <Route path ="/manage" component = {ManageTalksPage} />            
         </div>
     </Router>
 );
@@ -78,10 +78,10 @@ function RegisterForTalksPage(){
     )
 }
 
-function ManageRoomsPage(){
+function ManageTalksPage(){
     return(
         <App>
-            <ManageRooms />
+            <ManageTalks />
         </App>
     )
 }
