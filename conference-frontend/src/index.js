@@ -13,6 +13,7 @@ import Menu from './components/Menu';
 import RegisterForATalk from './components/RegisterForATalk';
 
 
+
 const routing = (
     <Router>
         <div>
@@ -42,7 +43,7 @@ function SignupPage(){
         <App>
             <Signup />
         </App>
-    )
+    );
 }
 
 function FilterArticlesPage(){

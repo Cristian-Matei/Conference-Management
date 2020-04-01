@@ -6,14 +6,29 @@ import Toolbar from './Toolbar';
 class Menu extends Component {
     constructor(props) {
         super(props);
-        console.log(this.props);
         this.state = {
             userId: this.props.location.state.userId,
             email: this.props.location.state.email,
             token: this.props.location.state.token,
             roles: this.props.location.state.roles,
+            speaker: false,
+            participant: false,
+            organizer: false
         }
-
+        
+        
+    }
+    componentDidMount(){
+        for(var i=0; i<this.state.roles.length;i++){
+            console.log(this.state.roles[i]);
+            if(this.state.roles[i]=='speaker')
+                this.setState({speaker:true});
+            if(this.state.roles[i]=="participant")
+                this.setState({participant:true});
+            if(this.state.roles[i]=="organizer")
+                this.setState({organizer:true});
+        }
+       
     }
 
     redirect = (value) => {
@@ -74,19 +89,23 @@ class Menu extends Component {
                         <div className="mdl-card__title">
                             <h2 className="mdl-card__title-text">Menu </h2>
                         </div>
-                        <h1>                 </h1>
+                        <h1>              </h1>
                         <div class="mdl-textfield mdl-js-textfield">
                             <button style={{ width: '200px' }} className="mdl-button mdl-js-button mdl-button--raised" onClick={(e) => { this.redirect(1) }}>Filter Articles</button>
                         </div>
+                        {(this.state.speaker || this.state.organizer) &&
                         <div class="mdl-textfield mdl-js-textfield">
                             <button style={{ width: '200px' }} className="mdl-button mdl-js-button mdl-button--raised" onClick={(e) => { this.redirect(2) }}>Upload Articles</button>
                         </div>
+                        }
                         <div class="mdl-textfield mdl-js-textfield">
                             <button style={{ width: '200px' }} className="mdl-button mdl-js-button mdl-button--raised" onClick={(e) => { this.redirect(3) }}>Register for a talk</button>
                         </div>
+                        {this.state.organizer &&
                         <div class="mdl-textfield mdl-js-textfield">
                             <button style={{ width: '200px' }} className="mdl-button mdl-js-button mdl-button--raised" onClick={(e) => { this.redirect(4) }}>Manage rooms</button>
                         </div>
+                        }
                     </div>
                 </div>
             </div>

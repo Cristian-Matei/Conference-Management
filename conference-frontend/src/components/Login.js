@@ -51,7 +51,9 @@ class Login extends Component {
     }
     render() {
         return (
+            
             <div class="centered">
+                
 				<div class="demo-card-wide mdl-card mdl-shadow--2dp">
 					<div class="mdl-card__title">
 						<h2 class="mdl-card__title-text">Welcome to this year's edition!</h2>
